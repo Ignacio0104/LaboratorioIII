@@ -1,14 +1,14 @@
 //Array original
-let arrayJson= JSON.parse('[{"id":1, "nombre":"Marcelo", "apellido":"Luque", "edad":45, "titulo":"Ingeniero", "facultad":"UTN", "añoGraduacion":2002},{"id":2, "nombre":"Ramiro", "apellido":"Escobar", "edad":35, "titulo":"Medico", "facultad":"UBA", "añoGraduacion":20012},{"id":3, "nombre":"Facundo", "apellido":"Cairo", "edad":30, "titulo":"Abogado", "facultad":"UCA", "añoGraduacion":2017},{"id":4, "nombre":"Fernando", "apellido":"Nieto", "edad":18, "equipo":"Independiente", "posicion":"Delantero", "cantidadGoles":7},{"id":5, "nombre":"Manuel", "apellido":"Loza", "edad":20, "equipo":"Racing", "posicion":"Volante", "cantidadGoles":2},{"id":6, "nombre":"Nicolas", "apellido":"Serrano", "edad":23, "equipo":"Boca", "posicion":"Arquero", "cantidadGoles":0}]');
+let arrayJson= JSON.parse('[{"id":1, "nombre":"Marcelo", "apellido":"Luque", "edad":45, "titulo":"Ingeniero", "facultad":"UTN", "anoGraduacion":2002},{"id":2, "nombre":"Ramiro", "apellido":"Escobar", "edad":35, "titulo":"Medico", "facultad":"UBA", "anoGraduacion":2012},{"id":3, "nombre":"Facundo", "apellido":"Cairo", "edad":30, "titulo":"Abogado", "facultad":"UCA", "anoGraduacion":2017},{"id":4, "nombre":"Fernando", "apellido":"Nieto", "edad":18, "equipo":"Independiente", "posicion":"Delantero", "cantidadGoles":7},{"id":5, "nombre":"Manuel", "apellido":"Loza", "edad":20, "equipo":"Racing", "posicion":"Volante", "cantidadGoles":2},{"id":6, "nombre":"Nicolas", "apellido":"Serrano", "edad":23, "equipo":"Boca", "posicion":"Arquero", "cantidadGoles":0}]');
 let arrayJugadores=[];
 let arrayProfesionales=[];
 
 //Selectores
 let body = document.querySelector("body");
-
+let checkBoxList = document.querySelectorAll('input[type=checkbox]');
 
 //Asignacion de listeners
-window.addEventListener("load",CargaInformacionJSON);
+//window.addEventListener("load",CargaInformacionJSON);
 window.addEventListener("load",CargarTablas);
 
 function CargaInformacionJSON()
@@ -25,9 +25,29 @@ function CargaInformacionJSON()
     });
 }
 
+function ValidarJugador(element)
+{
+    if(element.hasOwnProperty("equipo"))
+    {
+        return true;
+    }
+    return false;
+}
+
+function FiltrarColumnas()
+{
+    checkBoxList.forEach(element => {
+        if(element.checked)
+        {
+            console.log(element.value);
+        }
+    });
+}
+
 function CargarTablas()
 {
-    arrayJugadores.forEach(element => {
+    arrayJson.forEach(element => {
+        esJugador= ValidarJugador(element);
         let filaTabla = document.createElement("tr");
         let celdaId = document.createElement("td");
         let celdaNombre= document.createElement("td");
@@ -58,17 +78,19 @@ function CargarTablas()
         celdaApellido.classList.add("texto_largo");
         celdaEdad.innerText=element.edad;
         celdaEdad.classList.add("numeros");
-        celdadEquipo.innerText= element.equipo;
+
+        celdadEquipo.innerText= esJugador ? element.equipo : "-------";
         celdadEquipo.classList.add("texto_corto");
-        celdaPosicion.innerText=element.posicion;
+        celdaPosicion.innerText=esJugador ? element.posicion : "-------";
         celdaPosicion.classList.add("texto_corto");
-        celdaGoles.innerText=element.cantidadGoles;
+        celdaGoles.innerText=esJugador ? element.cantidadGoles : "-------"
         celdaGoles.classList.add("numeros");
-        celdaTitulo.innerText="------";
+
+        celdaTitulo.innerText= !esJugador ? element.titulo : "-------"
         celdaTitulo.classList.add("texto_largo");
-        celdaFacultad.innerText="----";
+        celdaFacultad.innerText=!esJugador ? element.facultad : "-------"
         celdaFacultad.classList.add("texto_largo");
-        celdaGraduacion.innerText="----";
+        celdaGraduacion.innerText=!esJugador ? element.anoGraduacion : "-------"
         celdaGraduacion.classList.add("texto_corto");
         
         document.getElementById("tabla").appendChild(filaTabla);
