@@ -1,0 +1,30 @@
+table th{
+    background-color: gray;
+    border: solid 2px black;
+}
+table{
+    border: 1;
+}
+
+td{
+    border: solid 2px black;
+    text-align: -internal-center;
+    text-align: center;
+}
+
+table {
+    border-spacing: 0px;
+    height: auto;
+}
+
+.numeros{
+    width: 70px;
+}
+
+.texto_largo{
+    width: 150px;
+}
+
+.texto_corto{
+    width: 130px;
+}

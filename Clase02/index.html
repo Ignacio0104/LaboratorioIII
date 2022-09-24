@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        class Persona
+        {
+            nombre="";
+            apellido="";
+            #edad=""; //Numeral quiere decir que es PRIVADO
+            constructor (nombre,apellido)
+            {
+                this.nombre=nombre || "Esteban"; //Asi se le asigna un valor por defecto por si viene null
+                this.apellido=apellido || "serrano";
+            }
+
+            setEdad(p){
+                this.#edad=p;
+            }
+
+            getEdad(){
+                return this.#edad;
+            }
+        }
+
+        class Ciudadano extends Persona
+        {
+            dni=0;
+
+            constructor(nombre,apellido,dni){
+                super(nombre,apellido);
+                this.dni=dni;
+            }
+
+        }
+
+        
+        let o = {"Nombre" : "horacio", "Apellido":"Serrano"};
+
+        //console.log(JSON.stringify(o));
+
+        let x = JSON.parse('[{"Nombre":"horacio","Apellido":"Serrano"}]');
+        let pruebaJson = JSON.parse('[{"id":1, "nombre":"Marcelo", "apellido":"Luque", "edad":45, "titulo":"Ingeniero", "facultad":"UTN", "añoGraduacion":2002},{"id":2, "nombre":"Ramiro", "apellido":"Escobar", "edad":35, "titulo":"Medico", "facultad":"UBA", "añoGraduacion":20012},{"id":3, "nombre":"Facundo", "apellido":"Cairo", "edad":30, "titulo":"Abogado", "facultad":"UCA", "añoGraduacion":2017},{"id":4, "nombre":"Fernando", "apellido":"Nieto", "edad":18, "equipo":"Independiente", "posicion":"Delantero", "cantidadGoles":7},{"id":5, "nombre":"Manuel", "apellido":"Loza", "edad":20, "equipo":"Racing", "posicion":"Volante", "cantidadGoles":2},{"id":6, "nombre":"Nicolas", "apellido":"Serrano", "edad":23, "equipo":"Boca", "posicion":"Arquero", "cantidadGoles":0}]');
+        
+        pruebaJson.forEach(element => {
+            if(element.hasOwnProperty("equipo"))
+            {
+                console.log(element["nombre"]);
+                console.log("Es futbolista");
+            }else{
+                console.log(element["nombre"]);
+                console.log("Es profesional");
+            }
+        });
+
+        /*let juan = new Persona ("Juan","Perez");
+        juan.setEdad(23);
+        console.log(juan.nombre);
+        console.log(juan.apellido);
+        console.log(juan.getEdad());*/
+    </script>
+</body>
+</html>
