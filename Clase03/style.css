@@ -17,14 +17,48 @@ table {
     height: auto;
 }
 
-.numeros{
+.id{
     width: 70px;
 }
 
-.texto_largo{
+.nombre{
     width: 150px;
 }
 
-.texto_corto{
+.apellido{
+    width: 150px;
+}
+
+.edad{
+    width: 70px;
+}
+
+.equipo{
     width: 130px;
 }
+
+.posicion{
+    width: 130px;
+}
+
+.goles{
+    width: 70px;
+}
+
+.titulo{
+    width: 70px;
+}
+
+.facultad{
+    width: 70px;
+}
+
+.ano_graduacion{
+    width: 130px;
+}
+
+
+
+
+
+
