@@ -42,7 +42,7 @@
                 <label>Posicion</label>
                 <input type="checkbox" value="cantGoles" checked="true">
                 <label>Cantidad de Goles</label>
-                <input type="checkbox" value="titulo" checked="true">
+                <input type="checkbox" value="titulo" checked="true">        
                 <label>Titulo</label>
                 <input type="checkbox" value="facultad" checked="true">
                 <label>Facultad</label>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="container_formulario">
-            <form> 
+            <form id="formularioAlta"> 
                 <label> Formulario ABM</label>
                 <label class="label_formulario">ID</label>
                 <input type="text" id="input_id">
@@ -68,27 +68,30 @@
                 <input type="text" id="input_edad">
                 <label class="label_formulario">Tipo:</label>
                 <select id="select_tipo">
-                    <option value="todos">Todos</option>
                     <option value="futbolistas">Futbolistas</option>
                     <option value="profesionales">Profesionales</option>
-                </select>             
-                <label class="label_formulario">Equipo:</label>
-                <input type="text" id="input_equipo">
-                <label class="label_formulario">Posicion</label>
-                <input type="text" id="input_posicion">
-                <label class="label_formulario">Cantidad de goles</label>
-                <input type="text" id="input_cantidadGoless">
-                <label class="label_formulario">Titulo:</label>
-                <input type="text" id="input_titulo">
-                <label class="label_formulario">Facultad</label>
-                <input type="text" id="input_facultad">
-                <label class="label_formulario">Año Graducación:</label>
-                <input type="text" id="input_anoGraduacion">
-                <button id="alta_btn">Alta</button>
-                <button id="modificar_btn">Modificar</button>
-                <button id="eliminar_btn">Eliminar</button>
-                <button id="cancelar_btn">Cancelar</button>
+                </select>  
+                <div class="input_alta_futbolista">          
+                    <label class="label_formulario">Equipo:</label>
+                    <input type="text" id="input_equipo">
+                    <label class="label_formulario">Posicion</label>
+                    <input type="text" id="input_posicion" >
+                    <label class="label_formulario">Cantidad de goles</label>
+                    <input type="text" id="input_cantidadGoles">
+                </div> 
+                <div class="input_alta_profesional">
+                    <label class="label_formulario">Titulo:</label>
+                    <input type="text" id="input_titulo">
+                    <label class="label_formulario">Facultad</label>
+                    <input type="text" id="input_facultad">
+                    <label class="label_formulario">Año Graducación:</label>
+                    <input type="text" id="input_anoGraduacion">
+                </div>
             </form>
+            <button id="alta_btn">Alta</button>
+            <button id="modificar_btn">Modificar</button>
+            <button id="eliminar_btn">Eliminar</button>
+            <button id="cancelar_btn">Cancelar</button>
         </div>
     </div>
     <button id="agregar_btn"> Agregar </button>

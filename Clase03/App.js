@@ -12,16 +12,20 @@ let comboBox = document.getElementById("select_filtro");
 let tablaInformacion = document.getElementById("tabla");
 let botonCalculo = document.getElementById("calcular_btn");
 let botonAgregar = document.getElementById("agregar_btn");
+let comboBoxAlta = document.getElementById("select_tipo");
+let botonAlta = document.getElementById("alta_btn");
 
 //Asignacion de listeners
 window.addEventListener("load",CargaInformacionJSON);
 window.addEventListener("load",CargarTablas);
 comboBox.addEventListener("change",CargarTablas)
+comboBoxAlta.addEventListener("change",OcultarCampos)
 checkBoxList.forEach(element => {
     element.addEventListener("change",FiltrarColumnas);
 });
 botonCalculo.addEventListener("click",CalcularEdadPromedio);
 botonAgregar.addEventListener("click",MostrarOcultarForm);
+botonAlta.addEventListener("click",AltaPersona);
 
 function CargaInformacionJSON()
 {
@@ -39,6 +43,7 @@ function CargaInformacionJSON()
     MostrarOcultarForm();
 }
 
+
 function MostrarOcultarForm()
 {
     if(formularioVisible)
@@ -46,14 +51,18 @@ function MostrarOcultarForm()
         document.querySelector(".container_formulario").style.display="none";
         document.querySelector(".container_tabla").style.display="block";
         botonAgregar.innerText = "Agregar";
+        document.getElementById("formularioAlta").reset();
+        CargarTablas();
         formularioVisible=false;
     }else{
+        OcultarCampos();
         document.querySelector(".container_formulario").style.display="block";
         document.querySelector(".container_tabla").style.display="none";
         botonAgregar.innerText = "Ocultar";
         formularioVisible=true;
     }
 }
+
 function FiltrarColumnas()
 {
     document.querySelectorAll(".id").forEach(a=>a.style.display = "none");
@@ -100,6 +109,98 @@ function FiltrarPorComboBox(element){
             return(element instanceof(Futbolista))
         case "profesionales":
             return(element instanceof(Profesional))
+    }
+}
+
+function OcultarCampos()
+{
+    switch(comboBoxAlta.value){
+        case "futbolistas":
+            document.querySelector(".input_alta_futbolista").style.display = "inherit";
+            document.querySelector(".input_alta_profesional").style.display = "none";
+            break;
+        case "profesionales":
+            document.querySelector(".input_alta_futbolista").style.display = "none";
+            document.querySelector(".input_alta_profesional").style.display = "inherit";
+            break;
+    }
+}
+
+function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion)
+{
+    if(id==""||isNaN(id)){
+        alert("Revisar el ID");
+        return false;
+    }
+    if(nombre==""||!isNaN(nombre)){
+        alert("Revisar el nombre");
+        return false;
+    }
+    if(apellido==""||!isNaN(apellido)){
+        alert("Revisar el apellido");
+        return false;
+    }
+    if(edad==""||edad<15||isNaN(edad)){
+        alert("Revisar la edad");
+        return false;
+    }
+    if(comboBoxAlta.value == "futbolistas")
+    {
+        if(equipo==""||!isNaN(equipo)){
+            alert("Revisar el equipo");
+            return false;
+        }
+        if(posicion==""||!isNaN(posicion)){
+            alert("Revisar la posicion");
+            return false;
+        }
+        if(goles==""||goles<0||isNaN(goles)){
+            alert("Revisar los goles");
+            return false;
+        }    
+    }else
+    {
+        if(titulo==""||!isNaN(titulo)){
+            alert("Revisar el titulo");
+            return false;
+        }
+        if(facultad==""||!isNaN(facultad)){
+            alert("Revisar la facultad");
+            return false;
+        }
+        if(graduacion==""||graduacion<1950||isNaN(graduacion)){
+            alert("Revisar el año de graduación");
+            return false;
+        }
+    }
+    alert("Alta correcta");
+   return true;
+}
+
+
+function AltaPersona()
+{
+    let id = document.getElementById("input_id").value;
+    let nombre = document.getElementById("input_nombre").value;
+    let apellido = document.getElementById("input_apellido").value;
+    let edad = document.getElementById("input_edad").value;
+    let equipo = document.getElementById("input_equipo").value;
+    let posicion = document.getElementById("input_posicion").value;
+    let goles = document.getElementById("input_cantidadGoles").value;
+    let titulo = document.getElementById("input_titulo").value;
+    let facultad = document.getElementById("input_facultad").value;
+    let graduacion = document.getElementById("input_anoGraduacion").value;
+    if(ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion))
+    {
+        if(comboBoxAlta.value == "futbolistas")
+        {
+            futbolistaAux = new Futbolista(id,nombre,apellido,edad,equipo,posicion,goles);
+            arrayPersonas.push(futbolistaAux);
+        }else
+        {
+            profesionalAux = new Profesional(id,nombre,apellido,edad,titulo,facultad,graduacion);
+            arrayPersonas.push(profesionalAux);
+        }
     }
 }
 
