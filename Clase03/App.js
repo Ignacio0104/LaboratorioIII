@@ -14,6 +14,9 @@ let botonCalculo = document.getElementById("calcular_btn");
 let botonAgregar = document.getElementById("agregar_btn");
 let comboBoxAlta = document.getElementById("select_tipo");
 let botonAlta = document.getElementById("alta_btn");
+let botonModificar = document.getElementById("modificar_btn");
+let botonEliminar = document.getElementById("eliminar_btn");
+let botonCancelar = document.getElementById("cancelar_btn");
 
 //Asignacion de listeners
 window.addEventListener("load",CargaInformacionJSON);
@@ -25,7 +28,8 @@ checkBoxList.forEach(element => {
 });
 botonCalculo.addEventListener("click",CalcularEdadPromedio);
 botonAgregar.addEventListener("click",MostrarOcultarForm);
-botonAlta.addEventListener("click",AltaPersona);
+botonAlta.addEventListener("click",AltaModificacion);
+botonModificar.addEventListener("click",AltaModificacion);
 
 function CargaInformacionJSON()
 {
@@ -60,45 +64,13 @@ function MostrarOcultarForm()
         document.querySelector(".container_tabla").style.display="none";
         botonAgregar.innerText = "Ocultar";
         formularioVisible=true;
+        botonAlta.style.display="inherit";
+        botonCancelar.style.display="none";
+        botonEliminar.style.display="none";
+        botonModificar.style.display="none";
     }
 }
 
-function FiltrarColumnas()
-{
-    document.querySelectorAll(".id").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".nombre").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".apellido").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".edad").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".equipo").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".posicion").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".goles").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".titulo").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".facultad").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".ano_graduacion").forEach(a=>a.style.display = "none");
-    let checkBoxChecked = document.querySelectorAll('input[type=checkbox]:checked');
-    checkBoxChecked.forEach(element => {
-        if(element.value == "id")
-            document.querySelectorAll(".id").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "nombre")
-            document.querySelectorAll(".nombre").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "apellido")
-            document.querySelectorAll(".apellido").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "edad")
-            document.querySelectorAll(".edad").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "equipo")
-            document.querySelectorAll(".equipo").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "posicion")
-            document.querySelectorAll(".posicion").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "cantGoles")
-            document.querySelectorAll(".goles").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "titulo")
-            document.querySelectorAll(".titulo").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "facultad")
-            document.querySelectorAll(".facultad").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "anoGraduado")
-            document.querySelectorAll(".ano_graduacion").forEach(a=>a.style.display = "inline-block");
-    });
-}
 
 
 function FiltrarPorComboBox(element){
@@ -173,7 +145,7 @@ function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facu
             return false;
         }
     }
-    alert("Alta correcta");
+    alert ("Cambio guardado con éxito");
    return true;
 }
 
@@ -190,8 +162,9 @@ function EncontrarUltimoId()
     return ultimoId;
 }
 
-function AltaPersona()
+function AltaModificacion()
 {
+    let id = document.getElementById("input_id").value;
     let nombre = document.getElementById("input_nombre").value;
     let apellido = document.getElementById("input_apellido").value;
     let edad = document.getElementById("input_edad").value;
@@ -201,16 +174,30 @@ function AltaPersona()
     let titulo = document.getElementById("input_titulo").value;
     let facultad = document.getElementById("input_facultad").value;
     let graduacion = document.getElementById("input_anoGraduacion").value;
+    
     if(ValidarCampos(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion))
     {
         if(comboBoxAlta.value == "futbolistas")
         {
-            futbolistaAux = new Futbolista(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles);
-            arrayPersonas.push(futbolistaAux);
+            if(id=="")
+            {
+                futbolistaAux = new Futbolista(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles);
+                arrayPersonas.push(futbolistaAux);
+            }else{
+                let futbolistoModificar = arrayPersonas.filter(element=>element.id==id);
+                futbolistoModificar[0].ActualizarDatos(nombre,apellido,edad,equipo,posicion,goles);
+            }
+
         }else
         {
-            profesionalAux = new Profesional(EncontrarUltimoId()+1,nombre,apellido,edad,titulo,facultad,graduacion);
-            arrayPersonas.push(profesionalAux);
+            if(id=="")
+            {            
+                profesionalAux = new Profesional(EncontrarUltimoId()+1,nombre,apellido,edad,titulo,facultad,graduacion);
+                arrayPersonas.push(profesionalAux);
+            }else{
+                let profesionalModificar = arrayPersonas.filter(element=>{ if(element.id==id) return element});
+                profesionalModificar[0].ActualizarDatos(nombre,apellido,edad,titulo,facultad,graduacion);
+            }
         }
     }
 }
@@ -225,7 +212,6 @@ function CalcularEdadPromedio()
     document.getElementById("textbox_calculo").value= acumulador/arrayPersonas.length;   
 }
 
-
 function CargarTablas()
 {
     tablaInformacion.innerHTML=""; 
@@ -234,6 +220,7 @@ function CargarTablas()
     arrayFiltrado = arrayPersonas.filter(element => FiltrarPorComboBox(element));
     arrayFiltrado.map(element=>CrearRegistros(element));  
 }
+
 function AbrirFormModificacion(e)
 {
     let fila = e.currentTarget;
@@ -254,7 +241,10 @@ function AbrirFormModificacion(e)
     document.getElementById("input_titulo").value=fila.cells[7].innerText;
     document.getElementById("input_facultad").value=fila.cells[8].innerText;
     document.getElementById("input_anoGraduacion").value=fila.cells[9].innerText;
-    
+    botonAlta.style.display="none";
+    botonCancelar.style.display="none";
+    botonEliminar.style.display="none";
+    botonModificar.style.display="inherit";
 }
 
 function CrearRegistros(element)
@@ -356,6 +346,42 @@ function CargarTitulos()
 
     tablaInformacion.appendChild(filaTitulos);
 }
+function FiltrarColumnas()
+{
+    document.querySelectorAll(".id").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".nombre").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".apellido").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".edad").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".equipo").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".posicion").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".goles").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".titulo").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".facultad").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".ano_graduacion").forEach(a=>a.style.display = "none");
+    let checkBoxChecked = document.querySelectorAll('input[type=checkbox]:checked');
+    checkBoxChecked.forEach(element => {
+        if(element.value == "id")
+            document.querySelectorAll(".id").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "nombre")
+            document.querySelectorAll(".nombre").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "apellido")
+            document.querySelectorAll(".apellido").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "edad")
+            document.querySelectorAll(".edad").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "equipo")
+            document.querySelectorAll(".equipo").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "posicion")
+            document.querySelectorAll(".posicion").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "cantGoles")
+            document.querySelectorAll(".goles").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "titulo")
+            document.querySelectorAll(".titulo").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "facultad")
+            document.querySelectorAll(".facultad").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "anoGraduado")
+            document.querySelectorAll(".ano_graduacion").forEach(a=>a.style.display = "inline-block");
+    });
+}
 
 
 //Clases
@@ -399,6 +425,17 @@ class Futbolista extends Persona{
     {
         return `${super.toString()}Equipo: ${this.equipo} - Posicion ${this.posicion} - Goles ${this.cantidadGoles}`;
     }
+
+    ActualizarDatos(nombre,apellido,edad,equipo,posicion,cantidadGoles)
+    {
+        this.id=id;
+        this.nombre=nombre;
+        this.apellido=apellido;
+        this.edad=edad;
+        this.equipo=equipo;
+        this.posicion=posicion;
+        this.cantidadGoles=cantidadGoles;
+    }
 }
 
 
@@ -418,5 +455,15 @@ class Profesional extends Persona{
     toString()
     {
         return `${super.toString()}Titulo: ${this.titulo} - Facultad ${this.facultad} - Año de graduación ${this.anoGraduacion}`;
+    }
+
+    ActualizarDatos(nombre,apellido,edad,facultad,titulo,anoGraduacion)
+    {
+        this.nombre=nombre;
+        this.apellido=apellido;
+        this.edad=edad;
+        this.titulo=titulo;
+        this.facultad = facultad;
+        this.anoGraduacion =anoGraduacion;
     }
 }
