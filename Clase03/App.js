@@ -2,11 +2,16 @@
 let arrayJson= JSON.parse('[{"id":1, "nombre":"Marcelo", "apellido":"Luque", "edad":45, "titulo":"Ingeniero", "facultad":"UTN", "anoGraduacion":2002},{"id":2, "nombre":"Ramiro", "apellido":"Escobar", "edad":35, "titulo":"Medico", "facultad":"UBA", "anoGraduacion":2012},{"id":3, "nombre":"Facundo", "apellido":"Cairo", "edad":30, "titulo":"Abogado", "facultad":"UCA", "anoGraduacion":2017},{"id":4, "nombre":"Fernando", "apellido":"Nieto", "edad":18, "equipo":"Independiente", "posicion":"Delantero", "cantidadGoles":7},{"id":5, "nombre":"Manuel", "apellido":"Loza", "edad":20, "equipo":"Racing", "posicion":"Volante", "cantidadGoles":2},{"id":6, "nombre":"Nicolas", "apellido":"Serrano", "edad":23, "equipo":"Boca", "posicion":"Arquero", "cantidadGoles":0}]');
 let arrayPersonas=[];
 
+//Variables
+let formularioVisible=true;
+
 //Selectores
 let body = document.querySelector("body");
 let checkBoxList = document.querySelectorAll('input[type=checkbox]');
 let comboBox = document.getElementById("select_filtro");
 let tablaInformacion = document.getElementById("tabla");
+let botonCalculo = document.getElementById("calcular_btn");
+let botonAgregar = document.getElementById("agregar_btn");
 
 //Asignacion de listeners
 window.addEventListener("load",CargaInformacionJSON);
@@ -15,6 +20,8 @@ comboBox.addEventListener("change",CargarTablas)
 checkBoxList.forEach(element => {
     element.addEventListener("change",FiltrarColumnas);
 });
+botonCalculo.addEventListener("click",CalcularEdadPromedio);
+botonAgregar.addEventListener("click",MostrarOcultarForm);
 
 function CargaInformacionJSON()
 {
@@ -29,6 +36,23 @@ function CargaInformacionJSON()
         }
     });
     FiltrarColumnas();
+    MostrarOcultarForm();
+}
+
+function MostrarOcultarForm()
+{
+    if(formularioVisible)
+    {
+        document.querySelector(".container_formulario").style.display="none";
+        document.querySelector(".container_tabla").style.display="block";
+        botonAgregar.innerText = "Agregar";
+        formularioVisible=false;
+    }else{
+        document.querySelector(".container_formulario").style.display="block";
+        document.querySelector(".container_tabla").style.display="none";
+        botonAgregar.innerText = "Ocultar";
+        formularioVisible=true;
+    }
 }
 function FiltrarColumnas()
 {
@@ -64,7 +88,6 @@ function FiltrarColumnas()
             document.querySelectorAll(".facultad").forEach(a=>a.style.display = "inline-block");
         if(element.value == "anoGraduado")
             document.querySelectorAll(".ano_graduacion").forEach(a=>a.style.display = "inline-block");
-
     });
 }
 
@@ -78,6 +101,16 @@ function FiltrarPorComboBox(element){
         case "profesionales":
             return(element instanceof(Profesional))
     }
+}
+
+function CalcularEdadPromedio()
+{
+    let acumulador=0;
+    arrayPersonas.map(element=>
+        {
+            acumulador += element.edad;
+        })
+    document.getElementById("textbox_calculo").value= acumulador/arrayPersonas.length;   
 }
 
 
