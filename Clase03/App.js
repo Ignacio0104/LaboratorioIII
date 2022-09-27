@@ -55,7 +55,7 @@ function MostrarOcultarForm()
         CargarTablas();
         formularioVisible=false;
     }else{
-        OcultarCampos();
+        OcultarCampos()
         document.querySelector(".container_formulario").style.display="block";
         document.querySelector(".container_tabla").style.display="none";
         botonAgregar.innerText = "Ocultar";
@@ -177,10 +177,21 @@ function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facu
    return true;
 }
 
+function EncontrarUltimoId()
+{
+    let ultimoId=0;
+    arrayPersonas.forEach(element => {
+        if(element.id>ultimoId)
+        {
+            ultimoId=element.id;
+        }
+    });
+
+    return ultimoId;
+}
 
 function AltaPersona()
 {
-    let id = document.getElementById("input_id").value;
     let nombre = document.getElementById("input_nombre").value;
     let apellido = document.getElementById("input_apellido").value;
     let edad = document.getElementById("input_edad").value;
@@ -190,15 +201,15 @@ function AltaPersona()
     let titulo = document.getElementById("input_titulo").value;
     let facultad = document.getElementById("input_facultad").value;
     let graduacion = document.getElementById("input_anoGraduacion").value;
-    if(ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion))
+    if(ValidarCampos(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion))
     {
         if(comboBoxAlta.value == "futbolistas")
         {
-            futbolistaAux = new Futbolista(id,nombre,apellido,edad,equipo,posicion,goles);
+            futbolistaAux = new Futbolista(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles);
             arrayPersonas.push(futbolistaAux);
         }else
         {
-            profesionalAux = new Profesional(id,nombre,apellido,edad,titulo,facultad,graduacion);
+            profesionalAux = new Profesional(EncontrarUltimoId()+1,nombre,apellido,edad,titulo,facultad,graduacion);
             arrayPersonas.push(profesionalAux);
         }
     }
@@ -222,6 +233,28 @@ function CargarTablas()
     CargarTitulos();
     arrayFiltrado = arrayPersonas.filter(element => FiltrarPorComboBox(element));
     arrayFiltrado.map(element=>CrearRegistros(element));  
+}
+function AbrirFormModificacion(e)
+{
+    let fila = e.currentTarget;
+    if(fila.cells[4].innerText=="-------")
+    {
+        comboBoxAlta.value="profesionales";
+    }else{
+        comboBoxAlta.value="futbolistas";
+    }
+    MostrarOcultarForm()
+    document.getElementById("input_id").value= fila.cells[0].innerText;
+    document.getElementById("input_nombre").value =fila.cells[1].innerText;
+    document.getElementById("input_apellido").value =fila.cells[2].innerText;
+    document.getElementById("input_edad").value=fila.cells[3].innerText;
+    document.getElementById("input_equipo").value=fila.cells[4].innerText;
+    document.getElementById("input_posicion").value=fila.cells[5].innerText;
+    document.getElementById("input_cantidadGoles").value=fila.cells[6].innerText;
+    document.getElementById("input_titulo").value=fila.cells[7].innerText;
+    document.getElementById("input_facultad").value=fila.cells[8].innerText;
+    document.getElementById("input_anoGraduacion").value=fila.cells[9].innerText;
+    
 }
 
 function CrearRegistros(element)
@@ -247,7 +280,8 @@ function CrearRegistros(element)
     filaTabla.appendChild(celdaTitulo);
     filaTabla.appendChild(celdaFacultad);
     filaTabla.appendChild(celdaGraduacion);
-
+    filaTabla.addEventListener("dblclick",AbrirFormModificacion);
+    
     celdaId.innerText=element.id;
     celdaNombre.innerText=element.nombre;   
     celdaApellido.innerText=element.apellido;   
