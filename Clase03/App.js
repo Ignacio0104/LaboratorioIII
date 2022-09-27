@@ -30,6 +30,7 @@ botonCalculo.addEventListener("click",CalcularEdadPromedio);
 botonAgregar.addEventListener("click",MostrarOcultarForm);
 botonAlta.addEventListener("click",AltaModificacion);
 botonModificar.addEventListener("click",AltaModificacion);
+botonEliminar.addEventListener("click",EliminarRegistro)
 
 function CargaInformacionJSON()
 {
@@ -70,7 +71,6 @@ function MostrarOcultarForm()
         botonModificar.style.display="none";
     }
 }
-
 
 
 function FiltrarPorComboBox(element){
@@ -162,6 +162,22 @@ function EncontrarUltimoId()
     return ultimoId;
 }
 
+function EliminarRegistro()
+{
+    let id = document.getElementById("input_id").value;
+    let indice;
+    for (let index = 0; index < arrayPersonas.length; index++) {
+        if(arrayPersonas[index].id == id)
+        {
+            indice = index;
+            break;
+        }  
+    }
+    arrayPersonas.splice(indice,1);
+    alert("Elemento eliminado");
+    MostrarOcultarForm();
+}
+
 function AltaModificacion()
 {
     let id = document.getElementById("input_id").value;
@@ -187,7 +203,6 @@ function AltaModificacion()
                 let futbolistoModificar = arrayPersonas.filter(element=>element.id==id);
                 futbolistoModificar[0].ActualizarDatos(nombre,apellido,edad,equipo,posicion,goles);
             }
-
         }else
         {
             if(id=="")
@@ -243,8 +258,8 @@ function AbrirFormModificacion(e)
     document.getElementById("input_anoGraduacion").value=fila.cells[9].innerText;
     botonAlta.style.display="none";
     botonCancelar.style.display="none";
-    botonEliminar.style.display="none";
     botonModificar.style.display="inherit";
+    botonEliminar.style.display="inherit";
 }
 
 function CrearRegistros(element)
