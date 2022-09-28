@@ -32,6 +32,7 @@ botonAlta.addEventListener("click",AltaModificacion);
 botonModificar.addEventListener("click",AltaModificacion);
 botonEliminar.addEventListener("click",EliminarRegistro)
 
+//Métodos automaticos
 function CargaInformacionJSON()
 {
     arrayJson.forEach(element => {
@@ -48,104 +49,7 @@ function CargaInformacionJSON()
     MostrarOcultarForm();
 }
 
-
-function MostrarOcultarForm()
-{
-    if(formularioVisible)
-    {
-        document.querySelector(".container_formulario").style.display="none";
-        document.querySelector(".container_tabla").style.display="block";
-        botonAgregar.innerText = "Agregar";
-        document.getElementById("formularioAlta").reset();
-        CargarTablas();
-        formularioVisible=false;
-    }else{
-        OcultarCampos()
-        document.querySelector(".container_formulario").style.display="block";
-        document.querySelector(".container_tabla").style.display="block";
-        botonAgregar.innerText = "Ocultar";
-        formularioVisible=true;
-        botonAlta.style.display="inherit";
-        botonCancelar.style.display="none";
-        botonEliminar.style.display="none";
-        botonModificar.style.display="none";
-    }
-}
-
-function FiltrarPorComboBox(element){
-    switch(comboBox.value){
-        case "todos":
-            return true;
-        case "futbolistas":
-            return(element instanceof(Futbolista))
-        case "profesionales":
-            return(element instanceof(Profesional))
-    }
-}
-
-
-function OcultarCampos()
-{
-    switch(comboBoxAlta.value){
-        case "futbolistas":
-            document.querySelector(".input_alta_futbolista").style.display = "inherit";
-            document.querySelector(".input_alta_profesional").style.display = "none";
-            break;
-        case "profesionales":
-            document.querySelector(".input_alta_futbolista").style.display = "none";
-            document.querySelector(".input_alta_profesional").style.display = "inherit";
-            break;
-    }
-}
-
-function OrdernarColumnas(e)
-{
-    let criterio = e.currentTarget.innerText;
-    criterio=criterio.toLowerCase();
-    if(criterio.includes("goles"))
-    {
-        criterio="cantidadGoles";
-    }
-    if(criterio.includes("graduaci"))
-    {
-        criterio="anoGraduacion";
-    }
-    
-    switch (criterio) {
-    case "id":
-        arrayPersonas = arrayPersonas.sort((a, b) => a.id - b.id);
-        break;
-    case "nombre":
-        arrayPersonas = arrayPersonas.sort((a,b) => (a.nombre> b.nombre) ? 1 : ((b.nombre > a.nombre) ? -1 : 0))
-        break;
-    case "apellido":
-        arrayPersonas = arrayPersonas.sort((a, b) => (a.apellido> b.apellido) ? 1 : ((b.apellido > a.apellido) ? -1 : 0))
-        break;
-    case "edad":
-        arrayPersonas = arrayPersonas.sort((a, b) => a.edad - b.edad);
-        break; 
-    case "equipo":
-        arrayPersonas = arrayPersonas.sort((a, b) => (a.equipo> b.equipo) ? 1 : ((b.equipo > a.equipo) ? -1 : 0))
-        break;
-    case "posicion":
-        arrayPersonas = arrayPersonas.sort((a, b) => (a.posicion> b.posicion) ? 1 : ((b.posicion > a.posicion) ? -1 : 0))
-        break;
-    case "cantidadGoles":
-        arrayPersonas = arrayPersonas.sort((a,b)=>a.cantidadGoles-b.cantidadGoles);
-        break;
-    case "titulo":
-        arrayPersonas = arrayPersonas.sort((a, b) => (a.titulo> b.titulo) ? 1 : ((b.titulo > a.titulo) ? -1 : 0))
-        break;
-    case "facultad":
-        arrayPersonas = arrayPersonas.sort((a, b) => (a.facultad> b.facultad) ? 1 : ((b.facultad > a.facultad) ? -1 : 0))
-        break;
-    case "anoGraduacion":
-        arrayPersonas = arrayPersonas.sort((a,b)=>a.anoGraduacion-b.anoGraduacion);
-        break;                                 
-    }
-    CargarTablas();
-}
-
+//ABM
 
 function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion)
 {
@@ -266,16 +170,6 @@ function AltaModificacion()
     }
 }
 
-function CalcularEdadPromedio()
-{
-    let acumulador=0;
-    arrayPersonas.map(element=>
-        {
-            acumulador += element.edad;
-        })
-    document.getElementById("textbox_calculo").value= acumulador/arrayPersonas.length;   
-}
-
 function CargarTablas()
 {
     tablaInformacion.innerHTML=""; 
@@ -361,6 +255,7 @@ function CrearRegistros(element)
     tablaInformacion.appendChild(filaTabla);
 }
 
+
 function CargarTitulos()
 {
     let filaTitulos = document.createElement("tr");
@@ -412,8 +307,82 @@ function CargarTitulos()
     let titulosColumnas = document.querySelectorAll('th');
     titulosColumnas.forEach(element => {
     element.addEventListener("click",OrdernarColumnas);
-});
+    });
 }
+
+//Calculos
+function CalcularEdadPromedio()
+{
+    let acumulador=0;
+    arrayPersonas.map(element=>
+        {
+            acumulador += element.edad;
+        })
+    document.getElementById("textbox_calculo").value= acumulador/arrayPersonas.length;   
+}
+
+//Ordenamiento
+function OrdernarColumnas(e)
+{
+    let criterio = e.currentTarget.innerText;
+    criterio=criterio.toLowerCase();
+    if(criterio.includes("goles"))
+    {
+        criterio="cantidadGoles";
+    }
+    if(criterio.includes("graduaci"))
+    {
+        criterio="anoGraduacion";
+    }
+    
+    switch (criterio) {
+    case "id":
+        arrayPersonas = arrayPersonas.sort((a, b) => a.id - b.id);
+        break;
+    case "nombre":
+        arrayPersonas = arrayPersonas.sort((a,b) => (a.nombre> b.nombre) ? 1 : ((b.nombre > a.nombre) ? -1 : 0))
+        break;
+    case "apellido":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.apellido> b.apellido) ? 1 : ((b.apellido > a.apellido) ? -1 : 0))
+        break;
+    case "edad":
+        arrayPersonas = arrayPersonas.sort((a, b) => a.edad - b.edad);
+        break; 
+    case "equipo":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.equipo> b.equipo) ? 1 : ((b.equipo > a.equipo) ? -1 : 0))
+        break;
+    case "posicion":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.posicion> b.posicion) ? 1 : ((b.posicion > a.posicion) ? -1 : 0))
+        break;
+    case "cantidadGoles":
+        arrayPersonas = arrayPersonas.sort((a,b)=>a.cantidadGoles-b.cantidadGoles);
+        break;
+    case "titulo":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.titulo> b.titulo) ? 1 : ((b.titulo > a.titulo) ? -1 : 0))
+        break;
+    case "facultad":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.facultad> b.facultad) ? 1 : ((b.facultad > a.facultad) ? -1 : 0))
+        break;
+    case "anoGraduacion":
+        arrayPersonas = arrayPersonas.sort((a,b)=>a.anoGraduacion-b.anoGraduacion);
+        break;                                 
+    }
+    CargarTablas();
+}
+
+
+//Filtros
+function FiltrarPorComboBox(element){
+    switch(comboBox.value){
+        case "todos":
+            return true;
+        case "futbolistas":
+            return(element instanceof(Futbolista))
+        case "profesionales":
+            return(element instanceof(Profesional))
+    }
+}
+
 function FiltrarColumnas()
 {
     document.querySelectorAll(".id").forEach(a=>a.style.display = "none");
@@ -451,6 +420,44 @@ function FiltrarColumnas()
     });
 }
 
+//Mostrar Ocultar
+
+function MostrarOcultarForm()
+{
+    if(formularioVisible)
+    {
+        document.querySelector(".container_formulario").style.display="block";
+        document.querySelector(".container_tabla").style.display="block";
+        botonAgregar.innerText = "Agregar";
+        document.getElementById("formularioAlta").reset();
+        CargarTablas();
+        formularioVisible=false;
+    }else{
+        OcultarCampos()
+        document.querySelector(".container_formulario").style.display="block";
+        document.querySelector(".container_tabla").style.display="block";
+        botonAgregar.innerText = "Ocultar";
+        formularioVisible=true;
+        botonAlta.style.display="inherit";
+        botonCancelar.style.display="none";
+        botonEliminar.style.display="none";
+        botonModificar.style.display="none";
+    }
+}
+
+function OcultarCampos()
+{
+    switch(comboBoxAlta.value){
+        case "futbolistas":
+            document.querySelector(".input_alta_futbolista").style.visibility = "hidden";
+            document.querySelector(".input_alta_profesional").style.visibility = "visible";
+            break;
+        case "profesionales":
+            document.querySelector(".input_alta_futbolista").style.visibility = "visible";
+            document.querySelector(".input_alta_profesional").style.visibility = "hidden";
+            break;
+    }
+}
 
 //Clases
 

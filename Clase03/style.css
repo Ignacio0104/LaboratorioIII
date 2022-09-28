@@ -61,6 +61,26 @@ table {
     display: block;
 }
 
+#formularioAlta{
+    background-color: green;
+    display: grid;
+    grid-template-columns: repeat(2, 200px);
+    justify-content: center;
+    padding: 10px;
+}
+.input_alta_futbolista{
+    background-color: green;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+
+}
+.input_alta_profesional{
+    background-color: green;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+}
+
+
 
 
 
