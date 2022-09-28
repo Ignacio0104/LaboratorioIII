@@ -426,7 +426,7 @@ function MostrarOcultarForm()
 {
     if(formularioVisible)
     {
-        document.querySelector(".container_formulario").style.display="block";
+        document.querySelector(".container_formulario").style.display="none";
         document.querySelector(".container_tabla").style.display="block";
         botonAgregar.innerText = "Agregar";
         document.getElementById("formularioAlta").reset();

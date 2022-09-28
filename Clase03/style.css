@@ -62,22 +62,35 @@ table {
 }
 
 #formularioAlta{
-    background-color: green;
     display: grid;
-    grid-template-columns: repeat(2, 200px);
+    grid-template-columns: repeat(2, 300px);
     justify-content: center;
+    align-items: center;
     padding: 10px;
+    column-gap: 10px;
+    row-gap: 20px;
 }
 .input_alta_futbolista{
-    background-color: green;
     display: grid;
     grid-template-columns: repeat(2, auto);
+    row-gap: 20px;
 
 }
 .input_alta_profesional{
-    background-color: green;
+
     display: grid;
     grid-template-columns: repeat(2, auto);
+    row-gap: 20px;
+}
+
+form{
+    width: 70%;
+    margin: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border-radius:4px;
+    background-color:#dde0ea;
 }
 
 
