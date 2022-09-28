@@ -62,7 +62,7 @@ function MostrarOcultarForm()
     }else{
         OcultarCampos()
         document.querySelector(".container_formulario").style.display="block";
-        document.querySelector(".container_tabla").style.display="none";
+        document.querySelector(".container_tabla").style.display="block";
         botonAgregar.innerText = "Ocultar";
         formularioVisible=true;
         botonAlta.style.display="inherit";
@@ -71,7 +71,6 @@ function MostrarOcultarForm()
         botonModificar.style.display="none";
     }
 }
-
 
 function FiltrarPorComboBox(element){
     switch(comboBox.value){
@@ -83,6 +82,7 @@ function FiltrarPorComboBox(element){
             return(element instanceof(Profesional))
     }
 }
+
 
 function OcultarCampos()
 {
@@ -97,6 +97,55 @@ function OcultarCampos()
             break;
     }
 }
+
+function OrdernarColumnas(e)
+{
+    let criterio = e.currentTarget.innerText;
+    criterio=criterio.toLowerCase();
+    if(criterio.includes("goles"))
+    {
+        criterio="cantidadGoles";
+    }
+    if(criterio.includes("graduaci"))
+    {
+        criterio="anoGraduacion";
+    }
+    
+    switch (criterio) {
+    case "id":
+        arrayPersonas = arrayPersonas.sort((a, b) => a.id - b.id);
+        break;
+    case "nombre":
+        arrayPersonas = arrayPersonas.sort((a,b) => (a.nombre> b.nombre) ? 1 : ((b.nombre > a.nombre) ? -1 : 0))
+        break;
+    case "apellido":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.apellido> b.apellido) ? 1 : ((b.apellido > a.apellido) ? -1 : 0))
+        break;
+    case "edad":
+        arrayPersonas = arrayPersonas.sort((a, b) => a.edad - b.edad);
+        break; 
+    case "equipo":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.equipo> b.equipo) ? 1 : ((b.equipo > a.equipo) ? -1 : 0))
+        break;
+    case "posicion":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.posicion> b.posicion) ? 1 : ((b.posicion > a.posicion) ? -1 : 0))
+        break;
+    case "cantidadGoles":
+        arrayPersonas = arrayPersonas.sort((a,b)=>a.cantidadGoles-b.cantidadGoles);
+        break;
+    case "titulo":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.titulo> b.titulo) ? 1 : ((b.titulo > a.titulo) ? -1 : 0))
+        break;
+    case "facultad":
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.facultad> b.facultad) ? 1 : ((b.facultad > a.facultad) ? -1 : 0))
+        break;
+    case "anoGraduacion":
+        arrayPersonas = arrayPersonas.sort((a,b)=>a.anoGraduacion-b.anoGraduacion);
+        break;                                 
+    }
+    CargarTablas();
+}
+
 
 function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion)
 {
@@ -354,12 +403,16 @@ function CargarTitulos()
     celdaEdad.innerText="Edad";
     celdadEquipo.innerText="Equipo";
     celdaPosicion.innerText="Posicion";
-    celdaGoles.innerText="Goles";
+    celdaGoles.innerText="Cant Goles";
     celdaTitulo.innerText="Titulo";
     celdaFacultad.innerText="Facultad";
     celdaGraduacion.innerText="Año Graduación";
 
     tablaInformacion.appendChild(filaTitulos);
+    let titulosColumnas = document.querySelectorAll('th');
+    titulosColumnas.forEach(element => {
+    element.addEventListener("click",OrdernarColumnas);
+});
 }
 function FiltrarColumnas()
 {
