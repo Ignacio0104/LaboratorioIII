@@ -1,0 +1,265 @@
+body{
+    background: linear-gradient(90deg, #57cc99 0%, #80ed99 35%, #c7f9cc);
+}
+
+#titulo{
+    font-family: 'Bungee Spice', cursive;
+    display: flex;
+    justify-content: center;
+}
+
+select {
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    appearance:none;
+    outline:0;
+    box-shadow:none;
+    border:0!important;
+    background: #22577a;
+    background-image: none;
+    flex: 1;
+    padding: 0 .5em;
+    color:#c7f9cc;
+    cursor:pointer;
+    font-size: 1em;
+    font-family: 'Raleway', sans-serif;
+ }
+select::-ms-expand {
+    display: none;
+ }
+select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #22577a;
+    overflow: hidden;
+    border-radius: .25em;
+ }
+select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #2b2e2e;
+    cursor:pointer;
+    pointer-events:none;
+    transition:.25s all ease;
+ }
+select:hover::after {
+    color: #23b499;
+ }
+
+select{
+    font-family: 'Raleway', sans-serif;
+    margin-left: 15px;
+}
+
+#textbox_calculo{
+    width: 10em;
+    line-height: 2;
+    background: #22577a;
+    overflow: hidden;
+    border-radius: .25em;
+    margin-left: 15px;
+    color:#c7f9cc;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    font-weight: bold;
+}
+
+.button_style {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button_style :hover {
+  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.tituloInline{
+    font-family: 'Raleway', sans-serif;
+    margin-left: 20px;
+    color: #22577a;
+}
+
+#selector_columnas{
+    font-family: 'Fredoka One', cursive;
+    display: flex;
+    color: #22577a;
+    justify-content: center;
+    padding: 20px;
+    border: 2px solid black;
+    max-width:fit-content;
+    margin: 10px;
+    box-shadow: 10px 5px 5px black;   
+}
+
+table th{
+    font-family: 'Fredoka One', cursive;
+    background-color: #22577a;
+    border: solid 1px black;
+    cursor:pointer;
+    color: #caf0f8;
+}
+table{
+    border: 1;
+}
+
+td{
+    border: solid 1px black;
+    text-align: -internal-center;
+    text-align: center;
+}
+
+tr:hover{
+    background-color:#57cc99;
+}
+
+table {
+    border-spacing: 0px;
+    height: auto;
+    font-family: 'Raleway', sans-serif;
+    color: #caf0f8;
+    background-color: #38a3a5;
+}
+
+#agregar_btn{
+    margin: 20px;
+}
+
+#select_tipo{
+    width: auto;
+}
+
+
+.id{
+    width: 70px;
+}
+
+.nombre{
+    width: 150px;
+}
+
+.apellido{
+    width: 150px;
+}
+
+.edad{
+    width: 70px;
+}
+
+.alterEgo{
+    width: 130px;
+}
+
+.ciudad{
+    width: 130px;
+}
+
+.publicado{
+    width: 100px;
+}
+
+.enemigo{
+    width: 70px;
+}
+
+.robos{
+    width: 70px;
+}
+
+.asesinatos{
+    width: 130px;
+}
+
+.label_formulario{
+    display: block;
+}
+
+#formularioAlta{
+    display: grid;
+    grid-template-columns: repeat(2, 300px);
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    column-gap: 10px;
+    row-gap: 20px;
+}
+.input_alta_futbolista{
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    row-gap: 20px;
+
+}
+.input_alta_profesional{
+
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    row-gap: 20px;
+}
+
+form{
+    width: 50%;
+    margin: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.8px);
+    -webkit-backdrop-filter: blur(5.8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-family: 'Fredoka One', cursive;
+    color: #22577a;
+}
+
+form input{
+    line-height: 2;
+    background: #22577a;
+    overflow: hidden;
+    border-radius: .25em;
+    margin-left: 15px;
+    color:#c7f9cc;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    font-weight: bold;
+}
+
+form select{
+    
+}
+
+.container_botones{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+
+
+
+
+
+
+
+

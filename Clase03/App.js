@@ -65,7 +65,7 @@ function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facu
         alert("Revisar el apellido");
         return false;
     }
-    if(edad==""||edad<15||isNaN(edad)){
+    if(edad<15||isNaN(edad)){
         alert("Revisar la edad");
         return false;
     }
@@ -79,7 +79,7 @@ function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facu
             alert("Revisar la posicion");
             return false;
         }
-        if(goles==""||goles<0||isNaN(goles)){
+        if(goles<0||isNaN(goles)){
             alert("Revisar los goles");
             return false;
         }    
@@ -93,7 +93,7 @@ function ValidarCampos(id,nombre,apellido,edad,equipo,posicion,goles,titulo,facu
             alert("Revisar la facultad");
             return false;
         }
-        if(graduacion==""||graduacion<1950||isNaN(graduacion)){
+        if(graduacion<1950||isNaN(graduacion)){
             alert("Revisar el año de graduación");
             return false;
         }
@@ -315,7 +315,8 @@ function CargarTitulos()
 function CalcularEdadPromedio()
 {
     let acumulador=0;
-   arrayPersonas.map(element =>
+    
+    arrayPersonas.filter(element => FiltrarPorComboBox(element)).map(element =>
         {
             acumulador += element.edad;
         })
