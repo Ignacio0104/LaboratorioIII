@@ -17,6 +17,7 @@ let botonAlta = document.getElementById("alta_btn");
 let botonModificar = document.getElementById("modificar_btn");
 let botonEliminar = document.getElementById("eliminar_btn");
 let botonCancelar = document.getElementById("cancelar_btn");
+let etiquetaError = document.getElementById("mensaje_error");
 
 //Asignacion de listeners
 window.addEventListener("load",CargaInformacionJSON);
@@ -55,51 +56,62 @@ function CargaInformacionJSON()
 function ValidarCampos(id,nombre,apellido,edad,alterEgo,ciudad,publicado,enemigo,robos,asesinatos)
 {
     if(id==""||isNaN(id)){
-        alert("Revisar el ID");
+        etiquetaError.style.display="flex";
+        etiquetaError.innerText="Revisar el ID";
         return false;
     }
     if(nombre==""||!isNaN(nombre)){
-        alert("Revisar el nombre");
+        etiquetaError.style.display="flex";
+        etiquetaError.innerText="Revisar el ID";
         return false;
     }
     if(apellido==""||!isNaN(apellido)){
-        alert("Revisar el apellido");
+        etiquetaError.style.display="flex";
+        etiquetaError.innerText="Revisar el apellido";
         return false;
     }
     if(isNaN(edad)){
-        alert("Revisar la edad");
+        etiquetaError.style.display="flex";
+        etiquetaError.innerText="Revisar la edad";
         return false;
     }
-    if(comboBoxAlta.value == "Heroes")
+    if(comboBoxAlta.value == "heroes")
     {
         if(alterEgo==""||!isNaN(alterEgo)){
-            alert("Revisar el alter ego");
+            etiquetaError.style.display="flex";
+            etiquetaError.innerText="Revisar el alter ego";
             return false;
         }
         if(ciudad==""||!isNaN(ciudad)){
-            alert("Revisar la ciudad");
+            etiquetaError.style.display="flex";
+            etiquetaError.innerText="Revisar la ciudad";
             return false;
         }
-        if(publicado<1940||isNaN(goles)){
-            alert("Revisar publicación");
+        if(publicado<1940||isNaN(publicado)){
+            etiquetaError.style.display="flex";
+            etiquetaError.innerText="Revisar la publicación";
             return false;
         }    
     }else
     {
         if(enemigo==""||!isNaN(enemigo)){
-            alert("Revisar el enemigo");
+            etiquetaError.style.display="flex";
+            etiquetaError.innerText="Revisar el enemigo";
             return false;
         }
         if(robos<1||isNaN(robos)){
-            alert("Revisar los robos");
+            etiquetaError.style.display="flex";
+            etiquetaError.innerText="Revisar los robos";
             return false;
         }
         if(asesinatos<1||isNaN(asesinatos)){
-            alert("Revisar los asesinatos");
+            etiquetaError.style.display="flex";
+            etiquetaError.innerText="Revisar los asesinatos";
             return false;
         }
     }
-    alert ("Cambio guardado con éxito");
+    etiquetaError.style.display="none";
+    alert ("Cambio guardado con éxito");  
    return true;
 }
 
@@ -147,7 +159,7 @@ function AltaModificacion()
     
     if(ValidarCampos(EncontrarUltimoId()+1,nombre,apellido,edad,alterEgo,ciudad,publicado,enemigo,robos,asesinatos))
     {
-        if(comboBoxAlta.value == "Heroes")
+        if(comboBoxAlta.value == "heroes")
         {
             if(id=="")
             {
@@ -175,6 +187,7 @@ function AltaModificacion()
 function CargarTablas()
 {
     tablaInformacion.innerHTML=""; 
+    etiquetaError.style.display="none";
     FiltrarColumnas()
     CargarTitulos();
     arrayFiltrado = arrayPersonas.filter(element => FiltrarPorComboBox(element));
@@ -190,6 +203,7 @@ function AbrirFormModificacion(e)
     }else{
         comboBoxAlta.value="heroes";
     }
+    comboBoxAlta.disabled = true;
     MostrarOcultarForm()
     document.getElementById("input_id").value= fila.cells[0].innerText;
     document.getElementById("input_nombre").value =fila.cells[1].innerText;
@@ -316,11 +330,8 @@ function CargarTitulos()
 function CalcularEdadPromedio()
 {
     let acumulador=0;
-    
-    arrayPersonas.filter(element => FiltrarPorComboBox(element)).map(element =>
-        {
-            acumulador += element.edad;
-        })
+    let arrayFiltrado = arrayPersonas.filter(element => FiltrarPorComboBox(element));
+    acumulador = arrayFiltrado.reduce((sumaParcial, a) => sumaParcial + a.edad, 0);
     document.getElementById("textbox_calculo").value = (acumulador/arrayPersonas.length).toFixed(2);   
 }
 
@@ -405,7 +416,7 @@ function FiltrarColumnas()
         if(element.value == "ciudad")
             document.querySelectorAll(".ciudad").forEach(a=>a.style.display = "inline-block");
         if(element.value == "publicado")
-            document.querySelectorAll(".golepublicados").forEach(a=>a.style.display = "inline-block");
+            document.querySelectorAll(".publicado").forEach(a=>a.style.display = "inline-block");
         if(element.value == "enemigo")
             document.querySelectorAll(".enemigo").forEach(a=>a.style.display = "inline-block");
         if(element.value == "robos")

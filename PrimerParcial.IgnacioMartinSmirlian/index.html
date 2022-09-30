@@ -5,10 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="iconoBatman.ico">
     <!--Fuentes-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <title>Simulacro primer parcial</title>
@@ -61,7 +62,7 @@
             </div>
         </div>
         <div class="container_formulario">
-            <h3 class="tituloInline"> Formulario ABM</h3>
+            <h3 class="tituloInline" id="titulo_form"> Formulario ABM</h3>
             <form id="formularioAlta">            
                 <label class="label_formulario">ID</label>
                 <input type="text" id="input_id" disabled="true">
@@ -72,7 +73,7 @@
                 <label class="label_formulario">Edad:</label>
                 <input type="text" id="input_edad">
                 <label class="label_formulario">Tipo:</label>
-                <select id="select_tipo">
+                <select id="select_tipo" class="input_select">
                     <option value="heroes">Heroes</option>
                     <option value="villanos">Villanos</option>
                 </select>  
@@ -93,14 +94,15 @@
                     <input type="text" id="input_asesinatos">
                 </div>
             </form>
-            <div class="container_botones">
+            <h2 id="mensaje_error">Prueba</h2>
+            <div class="container_botones">         
                 <button id="alta_btn" class="button_style">Alta</button>
                 <button id="modificar_btn" class="button_style">Modificar</button>
                 <button id="eliminar_btn" class="button_style">Eliminar</button>
                 <button id="cancelar_btn" class="button_style">Cancelar</button>
             </div>
         </div>
-    </div>
+    </div>    
     <button id="agregar_btn" class="button_style"> Agregar </button>
 </body>
 <script src="App.js"></script>
