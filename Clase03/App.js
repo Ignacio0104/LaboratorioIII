@@ -136,13 +136,13 @@ function AltaModificacion()
     let id = document.getElementById("input_id").value;
     let nombre = document.getElementById("input_nombre").value;
     let apellido = document.getElementById("input_apellido").value;
-    let edad = document.getElementById("input_edad").value;
+    let edad = parseInt(document.getElementById("input_edad").value);
     let equipo = document.getElementById("input_equipo").value;
     let posicion = document.getElementById("input_posicion").value;
-    let goles = document.getElementById("input_cantidadGoles").value;
+    let goles = parseInt(document.getElementById("input_cantidadGoles").value);
     let titulo = document.getElementById("input_titulo").value;
     let facultad = document.getElementById("input_facultad").value;
-    let graduacion = document.getElementById("input_anoGraduacion").value;
+    let graduacion = parseInt(document.getElementById("input_anoGraduacion").value);
     
     if(ValidarCampos(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles,titulo,facultad,graduacion))
     {
@@ -150,7 +150,7 @@ function AltaModificacion()
         {
             if(id=="")
             {
-                futbolistaAux = new Futbolista(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles);
+                let futbolistaAux = new Futbolista(EncontrarUltimoId()+1,nombre,apellido,edad,equipo,posicion,goles);
                 arrayPersonas.push(futbolistaAux);
             }else{
                 let futbolistoModificar = arrayPersonas.filter(element=>element.id==id);
@@ -160,13 +160,14 @@ function AltaModificacion()
         {
             if(id=="")
             {            
-                profesionalAux = new Profesional(EncontrarUltimoId()+1,nombre,apellido,edad,titulo,facultad,graduacion);
+                let profesionalAux = new Profesional(EncontrarUltimoId()+1,nombre,apellido,edad,titulo,facultad,graduacion);
                 arrayPersonas.push(profesionalAux);
             }else{
                 let profesionalModificar = arrayPersonas.filter(element=>{ if(element.id==id) return element});
                 profesionalModificar[0].ActualizarDatos(nombre,apellido,edad,titulo,facultad,graduacion);
             }
         }
+        MostrarOcultarForm();
     }
 }
 
@@ -314,11 +315,11 @@ function CargarTitulos()
 function CalcularEdadPromedio()
 {
     let acumulador=0;
-    arrayPersonas.map(element=>
+   arrayPersonas.map(element =>
         {
             acumulador += element.edad;
         })
-    document.getElementById("textbox_calculo").value= acumulador/arrayPersonas.length;   
+    document.getElementById("textbox_calculo").value = (acumulador/arrayPersonas.length).toFixed(2);   
 }
 
 //Ordenamiento
@@ -449,12 +450,12 @@ function OcultarCampos()
 {
     switch(comboBoxAlta.value){
         case "futbolistas":
-            document.querySelector(".input_alta_futbolista").style.visibility = "hidden";
-            document.querySelector(".input_alta_profesional").style.visibility = "visible";
-            break;
-        case "profesionales":
             document.querySelector(".input_alta_futbolista").style.visibility = "visible";
             document.querySelector(".input_alta_profesional").style.visibility = "hidden";
+            break;
+        case "profesionales":
+            document.querySelector(".input_alta_futbolista").style.visibility = "hidden";
+            document.querySelector(".input_alta_profesional").style.visibility = "visible";
             break;
     }
 }
@@ -503,7 +504,6 @@ class Futbolista extends Persona{
 
     ActualizarDatos(nombre,apellido,edad,equipo,posicion,cantidadGoles)
     {
-        this.id=id;
         this.nombre=nombre;
         this.apellido=apellido;
         this.edad=edad;
