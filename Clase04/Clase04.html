@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function p1(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if(xhttp.readyState ==4) //Se espera a llegar al estado 4 y despues se valida el estado 200
+            {
+                if(xhttp.status == 200 )
+                {
+                    return xhttp.response;
+                }else{
+                    console.log("No se pudieron recuperar los datos");
+                }
+            }     
+        };
+    xhttp.open("GET","http://localhost/personajes.php",true,"usuarios","pass");
+    xhttp.send();
+    };
+
+    function p2(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if(xhttp.readyState ==4) //Se espera a llegar al estado 4 y despues se valida el estado 200
+            {
+                if(xhttp.status == 200 )
+                {
+                    console.log(xhttp.response);
+                }else{
+                    console.log("Error: " + xhttp.response);
+                }
+            }    
+        };
+        xhttp.open("DELETE","http://localhost/personajes.php",true,"usuarios","pass");
+        xhttp.setRequestHeader('Content-type','application/json');
+        xhttp.send(JSON.stringify({'id' : 666 }));
+    }
+
+    async function f1()
+    {
+        let consulta = fetch('http://localhost/personajes.php',{
+            method: "DELETE",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers :{
+                'Content-Type' : 'application/json'
+            },
+            redirect: "follow",
+            referrerPolicy : "no-referrer",
+            body: JSON.stringify({"id":98})
+        });
+        consulta.then(respuesta => { return respuesta.text()}).then (texto=>{console.log(texto)})
+    }
+    
+    async function f2()
+    {
+        let consulta = await fetch('http://localhost/personajes.php',{
+            method: "DELETE",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers :{
+                'Content-Type' : 'application/json'
+            },
+            redirect: "follow",
+            referrerPolicy : "no-referrer",
+            body: JSON.stringify({"id":98})
+        });
+        let texto = await consulta.text();
+        console.log(texto);
+    }
+
+    async function f3()
+    {
+        var data = new URLSearchParams();
+        data.append("Nombre","Horacio")
+        let consulta = await fetch('http://localhost/personajes.php',{
+            method: "DELETE",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers :{
+                'Content-Type' : 'application/json'
+            },
+            redirect: "follow",
+            referrerPolicy : "no-referrer",
+            body: JSON.stringify({"id":98})
+        });
+        let texto = await consulta.text();
+        console.log(texto);
+    }
+
+    f2();
+</script>
+<body >
+    <button onclick="p1()">
+        Leer todos
+    </button>
+    <button onclick="p2()">
+        Borrar
+    </button>
+</body>
+</html>
