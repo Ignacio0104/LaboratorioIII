@@ -146,6 +146,17 @@ function EncontrarUltimoId()
     return ultimoId;
 }
 
+function EncontrarPorId(id)
+{
+    arrayPersonas.forEach(element => {
+        if(element.id>id)
+        {
+            return element;
+        }
+    });
+    return null;
+}
+
 function EliminarRegistro()
 {
     let id = document.getElementById("input_id").value;
@@ -212,9 +223,8 @@ function CargarTablas()
     arrayFiltrado.map(element=>CrearRegistros(element));  
 }
 
-function AbrirFormModificacion(e)
+function AbrirFormModificacion(fila,tipo)
 {
-    let fila = e.currentTarget;
     if(fila.cells[4].innerText=="N/A")
     {
         comboBoxAlta.value="villanos";
@@ -235,8 +245,12 @@ function AbrirFormModificacion(e)
     document.getElementById("input_asesinatos").value=fila.cells[9].innerText;
     botonAlta.style.display="none";
     botonCancelar.style.display="none";
-    botonModificar.style.display="inherit";
-    botonEliminar.style.display="inherit";
+    if(tipo==="mod")
+    {
+        botonModificar.style.display="inherit";
+    }else{
+        botonEliminar.style.display="inherit";
+    }
 }
 
 function CrearRegistros(element)
@@ -271,8 +285,8 @@ function CrearRegistros(element)
     filaTabla.appendChild(celdaAsesinatos);
     filaTabla.appendChild(celdaModificar);
     filaTabla.appendChild(celdaEliminar);
-    filaTabla.addEventListener("dblclick",AbrirFormModificacion);
-
+    botonModificar.addEventListener("click",() =>AbrirFormModificacion(filaTabla, "mod"));
+    botonEliminar.addEventListener("click",() =>AbrirFormModificacion(filaTabla, "sup"));
 
     
     celdaId.innerText=element.id;
