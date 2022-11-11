@@ -146,17 +146,6 @@ function EncontrarUltimoId()
     return ultimoId;
 }
 
-function EncontrarPorId(id)
-{
-    arrayPersonas.forEach(element => {
-        if(element.id>id)
-        {
-            return element;
-        }
-    });
-    return null;
-}
-
 function EliminarRegistro()
 {
     let id = document.getElementById("input_id").value;
@@ -175,6 +164,7 @@ function EliminarRegistro()
 
 function AltaModificacion()
 {
+    comboBoxAlta.disabled = false;
     let id = document.getElementById("input_id").value;
     let nombre = document.getElementById("input_nombre").value;
     let apellido = document.getElementById("input_apellido").value;
@@ -211,6 +201,7 @@ function AltaModificacion()
         }
         MostrarOcultarForm();
     }
+   
 }
 
 function CargarTablas()
@@ -488,6 +479,7 @@ function MostrarOcultarForm()
         botonAgregar.innerText = "Agregar";
         document.getElementById("formularioAlta").reset();
         CargarTablas();
+        comboBoxAlta.disabled=false;
         formularioVisible=false;
     }else{
         OcultarCampos()
