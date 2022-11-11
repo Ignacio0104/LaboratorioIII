@@ -21,6 +21,25 @@ xhttp.open("GET","http://localhost/personajes.php",true,"usuarios","pass");
 xhttp.send();
 };
 
+async function cargarPersonaje(personaje)
+{
+    console.log(JSON.stringify(personaje));
+    let consulta = fetch('http://localhost/personajes.php',{
+        method: "PUT",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers :{
+            'Content-Type' : 'application/json'
+        },
+        redirect: "follow",
+        referrerPolicy : "no-referrer", 
+        body: JSON.stringify(personaje)
+    });
+    consulta.then(respuesta => { return respuesta.text()}).then (texto=>{console.log(texto)})
+}
+
+
 //Variables
 let formularioVisible=true;
 
@@ -71,7 +90,7 @@ function CargaInformacionJSON()
 
 //ABM
 
-function ValidarCampos(id,nombre,apellido,edad,alterEgo,ciudad,publicado,enemigo,robos,asesinatos)
+function ValidarCampos(id,nombre,apellido,edad,alterego,ciudad,publicado,enemigo,robos,asesinatos)
 {
     if(id==""||isNaN(id)){
         etiquetaError.style.display="flex";
@@ -95,7 +114,7 @@ function ValidarCampos(id,nombre,apellido,edad,alterEgo,ciudad,publicado,enemigo
     }
     if(comboBoxAlta.value == "heroes")
     {
-        if(alterEgo==""||!isNaN(alterEgo)){
+        if(alterego==""||!isNaN(alterego)){
             etiquetaError.style.display="flex";
             etiquetaError.innerText="Revisar el alter ego";
             return false;
@@ -136,6 +155,7 @@ function ValidarCampos(id,nombre,apellido,edad,alterEgo,ciudad,publicado,enemigo
 function EncontrarUltimoId()
 {
     let ultimoId=0;
+    console.log(ultimoId);
     arrayPersonas.forEach(element => {
         if(element.id>ultimoId)
         {
@@ -143,6 +163,7 @@ function EncontrarUltimoId()
         }
     });
 
+    
     return ultimoId;
 }
 
@@ -169,31 +190,31 @@ function AltaModificacion()
     let nombre = document.getElementById("input_nombre").value;
     let apellido = document.getElementById("input_apellido").value;
     let edad = parseInt(document.getElementById("input_edad").value);
-    let alterEgo = document.getElementById("input_alterEgo").value;
+    let alterego = document.getElementById("input_alterEgo").value;
     let ciudad = document.getElementById("input_ciudad").value;
     let publicado = parseInt(document.getElementById("input_publicacion").value);
     let enemigo = document.getElementById("input_enemigo").value;
     let robos = document.getElementById("input_robos").value;
     let asesinatos = parseInt(document.getElementById("input_asesinatos").value);
     
-    if(ValidarCampos(EncontrarUltimoId()+1,nombre,apellido,edad,alterEgo,ciudad,publicado,enemigo,robos,asesinatos))
+    if(ValidarCampos(EncontrarUltimoId() + 1,nombre,apellido,edad,alterego,ciudad,publicado,enemigo,robos,asesinatos))
     {
         if(comboBoxAlta.value == "heroes")
         {
             if(id=="")
             {
-                let HeroeAux = new Heroe(EncontrarUltimoId()+1,nombre,apellido,edad,alterEgo,ciudad,publicado);
-                arrayPersonas.push(HeroeAux);
+                let HeroeAux = new Heroe(EncontrarUltimoId() + 1, nombre,apellido,edad,alterego,ciudad,publicado);
+                cargarPersonaje(HeroeAux);
             }else{
                 let futbolistoModificar = arrayPersonas.filter(element=>element.id==id);
-                futbolistoModificar[0].ActualizarDatos(nombre,apellido,edad,alterEgo,ciudad,publicado);
+                futbolistoModificar[0].ActualizarDatos(nombre,apellido,edad,alterego,ciudad,publicado);
             }
         }else
         {
             if(id=="")
             {            
-                let VillanoAux = new Villano(EncontrarUltimoId()+1,nombre,apellido,edad,enemigo,robos,asesinatos);
-                arrayPersonas.push(VillanoAux);
+                let VillanoAux = new Villano(nombre,apellido,edad,enemigo,robos,asesinatos);
+                cargarPersonaje(VillanoAux);
             }else{
                 let VillanoModificar = arrayPersonas.filter(element=>{ if(element.id==id) return element});
                 VillanoModificar[0].ActualizarDatos(nombre,apellido,edad,enemigo,robos,asesinatos);
@@ -251,7 +272,7 @@ function CrearRegistros(element)
     let celdaNombre= document.createElement("td");
     let celdaApellido = document.createElement("td");
     let celdaEdad = document.createElement("td");
-    let celdaAlterEgo = document.createElement("td");
+    let celdaalterego = document.createElement("td");
     let celdaCiudad =document.createElement("td");
     let celdaPublicado = document.createElement("td");
     let celdaEnemigo = document.createElement("td");
@@ -268,7 +289,7 @@ function CrearRegistros(element)
     filaTabla.appendChild(celdaNombre);
     filaTabla.appendChild(celdaApellido);
     filaTabla.appendChild(celdaEdad);
-    filaTabla.appendChild(celdaAlterEgo);
+    filaTabla.appendChild(celdaalterego);
     filaTabla.appendChild(celdaCiudad);
     filaTabla.appendChild(celdaPublicado);
     filaTabla.appendChild(celdaEnemigo);
@@ -284,7 +305,7 @@ function CrearRegistros(element)
     celdaNombre.innerText=element.nombre;   
     celdaApellido.innerText=element.apellido;   
     celdaEdad.innerText=element.edad;
-    celdaAlterEgo.innerText= element instanceof Heroe ? element.alterEgo : "N/A"   
+    celdaalterego.innerText= element instanceof Heroe ? element.alterego : "N/A"   
     celdaCiudad.innerText=element instanceof Heroe ? element.ciudad : "N/A"   
     celdaPublicado.innerText=element instanceof Heroe ? element.publicado : "N/A"   
     celdaEnemigo.innerText= element instanceof Villano ? element.enemigo : "N/A"   
@@ -297,7 +318,7 @@ function CrearRegistros(element)
     celdaNombre.classList.add("nombre");
     celdaApellido.classList.add("apellido");
     celdaEdad.classList.add("edad");
-    celdaAlterEgo.classList.add("alterEgo");
+    celdaalterego.classList.add("alterego");
     celdaCiudad.classList.add("ciudad");
     celdaPublicado.classList.add("publicado");
     celdaEnemigo.classList.add("enemigo");
@@ -315,7 +336,7 @@ function CargarTitulos()
     let celdaNombre= document.createElement("th");
     let celdaApellido = document.createElement("th");
     let celdaEdad = document.createElement("th");
-    let celdaAlterEgo = document.createElement("th");
+    let celdaalterego = document.createElement("th");
     let celdaCiudad =document.createElement("th");
     let celdaPublicado = document.createElement("th");
     let celdaEnemigo = document.createElement("th");
@@ -328,7 +349,7 @@ function CargarTitulos()
     filaTitulos.appendChild(celdaNombre);
     filaTitulos.appendChild(celdaApellido);
     filaTitulos.appendChild(celdaEdad);
-    filaTitulos.appendChild(celdaAlterEgo);
+    filaTitulos.appendChild(celdaalterego);
     filaTitulos.appendChild(celdaCiudad);
     filaTitulos.appendChild(celdaPublicado);
     filaTitulos.appendChild(celdaEnemigo);
@@ -341,7 +362,7 @@ function CargarTitulos()
     celdaNombre.classList.add("nombre");
     celdaApellido.classList.add("apellido");
     celdaEdad.classList.add("edad");
-    celdaAlterEgo.classList.add("alterEgo");
+    celdaalterego.classList.add("alterego");
     celdaCiudad.classList.add("ciudad");
     celdaPublicado.classList.add("publicado");
     celdaEnemigo.classList.add("enemigo");
@@ -352,7 +373,7 @@ function CargarTitulos()
     celdaNombre.innerText="Nombre";
     celdaApellido.innerText="Apellido";
     celdaEdad.innerText="Edad";
-    celdaAlterEgo.innerText="AlterEgo";
+    celdaalterego.innerText="alterego";
     celdaCiudad.innerText="Ciudad";
     celdaPublicado.innerText="Publicado";
     celdaEnemigo.innerText="Enemigo";
@@ -397,7 +418,7 @@ function OrdernarColumnas(e)
         arrayPersonas = arrayPersonas.sort((a, b) => a.edad - b.edad);
         break; 
     case "alterego":
-        arrayPersonas = arrayPersonas.sort((a, b) => (a.alterEgo> b.alterEgo) ? 1 : ((b.alterEgo > a.alterEgo) ? -1 : 0))
+        arrayPersonas = arrayPersonas.sort((a, b) => (a.alterego> b.alterego) ? 1 : ((b.alterego > a.alterego) ? -1 : 0))
         break;
     case "ciudad":
         arrayPersonas = arrayPersonas.sort((a, b) => (a.ciudad> b.ciudad) ? 1 : ((b.ciudad > a.ciudad) ? -1 : 0))
@@ -437,7 +458,7 @@ function FiltrarColumnas()
     document.querySelectorAll(".nombre").forEach(a=>a.style.display = "none");
     document.querySelectorAll(".apellido").forEach(a=>a.style.display = "none");
     document.querySelectorAll(".edad").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".alterEgo").forEach(a=>a.style.display = "none");
+    document.querySelectorAll(".alterego").forEach(a=>a.style.display = "none");
     document.querySelectorAll(".ciudad").forEach(a=>a.style.display = "none");
     document.querySelectorAll(".publicado").forEach(a=>a.style.display = "none");
     document.querySelectorAll(".enemigo").forEach(a=>a.style.display = "none");
@@ -453,8 +474,8 @@ function FiltrarColumnas()
             document.querySelectorAll(".apellido").forEach(a=>a.style.display = "inline-block");
         if(element.value == "edad")
             document.querySelectorAll(".edad").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "alterEgo")
-            document.querySelectorAll(".alterEgo").forEach(a=>a.style.display = "inline-block");
+        if(element.value == "alterego")
+            document.querySelectorAll(".alterego").forEach(a=>a.style.display = "inline-block");
         if(element.value == "ciudad")
             document.querySelectorAll(".ciudad").forEach(a=>a.style.display = "inline-block");
         if(element.value == "publicado")
@@ -533,29 +554,29 @@ class Persona{
 
 class Heroe extends Persona{
     
-    alterEgo;
+    alterego;
     ciudad;
     publicado;
 
-    constructor(id,nombre,apellido,edad,alterEgo,ciudad,publicado)
+    constructor(id,nombre,apellido,edad,alterego,ciudad,publicado)
     {
         super(id,nombre,apellido,edad);
-        this.alterEgo=alterEgo;
+        this.alterego=alterego;
         this.ciudad=ciudad;
         this.publicado=publicado;
     }
 
     toString()
     {
-        return `${super.toString()}alterEgo: ${this.alterEgo} - Ciudad ${this.ciudad} - Publicado ${this.publicado}`;
+        return `${super.toString()}alterego: ${this.alterego} - Ciudad ${this.ciudad} - Publicado ${this.publicado}`;
     }
 
-    ActualizarDatos(nombre,apellido,edad,alterEgo,ciudad,publicado)
+    ActualizarDatos(nombre,apellido,edad,alterego,ciudad,publicado)
     {
         this.nombre=nombre;
         this.apellido=apellido;
         this.edad=edad;
-        this.alterEgo=alterEgo;
+        this.alterego=alterego;
         this.ciudad=ciudad;
         this.publicado=publicado;
     }
