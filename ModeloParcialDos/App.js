@@ -44,6 +44,25 @@ async function cargarPersonaje(personaje)
         MostrarOcultarForm();
         }
     )
+};
+
+async function modificarPersonaje(personaje)
+{
+    let consulta = await fetch('http://localhost/personajes.php',{
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers :{
+            'Content-Type' : 'application/json'
+        },
+        redirect: "follow",
+        referrerPolicy : "no-referrer",
+        body: JSON.stringify(personaje)
+    });
+    let texto = await consulta.text();
+    console.log(texto);
+    MostrarOcultarForm();
 }
 
 
@@ -214,6 +233,7 @@ function AltaModificacion()
                 cargarPersonaje(HeroeAux);
             }else{
                 let heroeModificar = arrayPersonas.filter(element=>element.id==id);
+                modificarPersonaje(heroeModificar[0]);
                 heroeModificar[0].ActualizarDatos(nombre,apellido,edad,alterego,ciudad,publicado);
             }
         }else
