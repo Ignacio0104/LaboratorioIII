@@ -10,8 +10,8 @@ function traerPersonajes(){
             if(xhttp.status == 200 )
             {
                 console.log(xhttp.response)
-                arrayJson = JSON.parse(xhttp.response);
-                CargaInformacionJSON();
+                arrayJson = JSON.parse(xhttp.response); 
+                CargaInformacionJSON();               
             }else{
                 console.log("No se pudieron recuperar los datos");
             }
@@ -66,7 +66,6 @@ function CargaInformacionJSON()
             arrayPersonas.push(nuevoVillano);
         }
     });
-    FiltrarColumnas();
     MostrarOcultarForm();
 }
 
@@ -216,7 +215,7 @@ function CargarTablas()
 function AbrirFormModificacion(e)
 {
     let fila = e.currentTarget;
-    if(fila.cells[4].innerText=="-------")
+    if(fila.cells[4].innerText=="N/A")
     {
         comboBoxAlta.value="villanos";
     }else{
@@ -253,6 +252,13 @@ function CrearRegistros(element)
     let celdaEnemigo = document.createElement("td");
     let celdaRobos = document.createElement("td");
     let celdaAsesinatos = document.createElement("td");
+    let celdaModificar = document.createElement("td");
+    let celdaEliminar = document.createElement("td");
+
+    let botonModificar = document.createElement("button");
+    botonModificar.innerText="Modificar"
+    let botonEliminar = document.createElement("button");
+    botonEliminar.innerText="Eliminar"
     filaTabla.appendChild(celdaId);
     filaTabla.appendChild(celdaNombre);
     filaTabla.appendChild(celdaApellido);
@@ -263,18 +269,24 @@ function CrearRegistros(element)
     filaTabla.appendChild(celdaEnemigo);
     filaTabla.appendChild(celdaRobos);
     filaTabla.appendChild(celdaAsesinatos);
+    filaTabla.appendChild(celdaModificar);
+    filaTabla.appendChild(celdaEliminar);
     filaTabla.addEventListener("dblclick",AbrirFormModificacion);
+
+
     
     celdaId.innerText=element.id;
     celdaNombre.innerText=element.nombre;   
     celdaApellido.innerText=element.apellido;   
     celdaEdad.innerText=element.edad;
-    celdaAlterEgo.innerText= element instanceof Heroe ? element.alterEgo : "-------";   
-    celdaCiudad.innerText=element instanceof Heroe ? element.ciudad : "-------";   
-    celdaPublicado.innerText=element instanceof Heroe ? element.publicado : "-------"   
-    celdaEnemigo.innerText= element instanceof Villano ? element.enemigo : "-------"   
-    celdaRobos.innerText=element instanceof Villano ? element.robos : "-------"   
-    celdaAsesinatos.innerText=element instanceof Villano ? element.asesinatos : "-------"
+    celdaAlterEgo.innerText= element instanceof Heroe ? element.alterEgo : "N/A"   
+    celdaCiudad.innerText=element instanceof Heroe ? element.ciudad : "N/A"   
+    celdaPublicado.innerText=element instanceof Heroe ? element.publicado : "N/A"   
+    celdaEnemigo.innerText= element instanceof Villano ? element.enemigo : "N/A"   
+    celdaRobos.innerText=element instanceof Villano ? element.robos : "N/A"   
+    celdaAsesinatos.innerText=element instanceof Villano ? element.asesinatos : "N/A"
+    celdaModificar.appendChild(botonModificar);
+    celdaEliminar.appendChild(botonEliminar);
 
     celdaId.classList.add("id");
     celdaNombre.classList.add("nombre");
@@ -304,6 +316,8 @@ function CargarTitulos()
     let celdaEnemigo = document.createElement("th");
     let celdaRobos = document.createElement("th");
     let celdaAsesinatos = document.createElement("th");
+    let celdaModificar = document.createElement("th");
+    let celdaEliminar = document.createElement("th");
 
     filaTitulos.appendChild(celdaId);
     filaTitulos.appendChild(celdaNombre);
@@ -315,6 +329,8 @@ function CargarTitulos()
     filaTitulos.appendChild(celdaEnemigo);
     filaTitulos.appendChild(celdaRobos);
     filaTitulos.appendChild(celdaAsesinatos);
+    filaTitulos.appendChild(celdaModificar);
+    filaTitulos.appendChild(celdaEliminar);
 
     celdaId.classList.add("id");
     celdaNombre.classList.add("nombre");
@@ -337,6 +353,8 @@ function CargarTitulos()
     celdaEnemigo.innerText="Enemigo";
     celdaRobos.innerText="Robos";
     celdaAsesinatos.innerText="Asesinatos";
+    celdaModificar.innerText="Modificar";
+    celdaEliminar.innerText="Eliminar";
 
     tablaInformacion.appendChild(filaTitulos);
     let titulosColumnas = document.querySelectorAll('th');
