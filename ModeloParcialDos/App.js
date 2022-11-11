@@ -36,7 +36,14 @@ async function cargarPersonaje(personaje)
         referrerPolicy : "no-referrer", 
         body: JSON.stringify(personaje)
     });
-    consulta.then(respuesta => { return respuesta.text()}).then (texto=>{console.log(texto)})
+    consulta.then(respuesta => { return respuesta.text()}).then 
+    (texto=>
+        {
+        personaje.id=JSON.parse(texto)["id"];
+        arrayPersonas.push(personaje)
+        MostrarOcultarForm();
+        }
+    )
 }
 
 
@@ -206,8 +213,8 @@ function AltaModificacion()
                 let HeroeAux = new Heroe(EncontrarUltimoId() + 1, nombre,apellido,edad,alterego,ciudad,publicado);
                 cargarPersonaje(HeroeAux);
             }else{
-                let futbolistoModificar = arrayPersonas.filter(element=>element.id==id);
-                futbolistoModificar[0].ActualizarDatos(nombre,apellido,edad,alterego,ciudad,publicado);
+                let heroeModificar = arrayPersonas.filter(element=>element.id==id);
+                heroeModificar[0].ActualizarDatos(nombre,apellido,edad,alterego,ciudad,publicado);
             }
         }else
         {
@@ -220,7 +227,6 @@ function AltaModificacion()
                 VillanoModificar[0].ActualizarDatos(nombre,apellido,edad,enemigo,robos,asesinatos);
             }
         }
-        MostrarOcultarForm();
     }
    
 }
