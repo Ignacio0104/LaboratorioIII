@@ -21,9 +21,8 @@ xhttp.open("GET","http://localhost/personajes.php",true,"usuarios","pass");
 xhttp.send();
 };
 
-async function cargarPersonaje(personaje)
+function cargarPersonaje(personaje)
 {
-    console.log(JSON.stringify(personaje));
     let consulta = fetch('http://localhost/personajes.php',{
         method: "PUT",
         mode: "cors",
@@ -36,17 +35,21 @@ async function cargarPersonaje(personaje)
         referrerPolicy : "no-referrer", 
         body: JSON.stringify(personaje)
     });
-    consulta.then(respuesta => { return respuesta.text()}).then 
-    (texto=>
+    consulta.then(respuesta=>{
+        if(respuesta.status==200)
         {
-        personaje.id=JSON.parse(texto)["id"];
-        arrayPersonas.push(personaje)
-        MostrarOcultarForm();
+            respuesta.json().then(objetoEnJson =>{
+                personaje.id=JSON.parse(objetoEnJson["id"]);
+                arrayPersonas.push(personaje)
+                MostrarOcultarForm();
+            }).catch(err => alert(err))//Siempre catch 
+        }else{
+            console.log("No se pudo")
         }
-    )
+    }).catch(err=>alert(err));
 };
 
-async function modificarPersonaje(personaje)
+async function modificarPersonaje(personaje,atributos)
 {
     let consulta = await fetch('http://localhost/personajes.php',{
         method: "POST",
@@ -61,8 +64,13 @@ async function modificarPersonaje(personaje)
         body: JSON.stringify(personaje)
     });
     let texto = await consulta.text();
-    console.log(texto);
-    MostrarOcultarForm();
+    if(consulta.status!=400)
+    {
+        personaje.ActualizarDatos(atributos[0],atributos[1],atributos[2],atributos[3],atributos[4],atributos[5]);
+        MostrarOcultarForm();      
+    }else{
+        console.log("No se pudo");
+    }
 }
 
 
@@ -222,7 +230,6 @@ function AltaModificacion()
     let enemigo = document.getElementById("input_enemigo").value;
     let robos = document.getElementById("input_robos").value;
     let asesinatos = parseInt(document.getElementById("input_asesinatos").value);
-    
     if(ValidarCampos(EncontrarUltimoId() + 1,nombre,apellido,edad,alterego,ciudad,publicado,enemigo,robos,asesinatos))
     {
         if(comboBoxAlta.value == "heroes")
@@ -233,8 +240,7 @@ function AltaModificacion()
                 cargarPersonaje(HeroeAux);
             }else{
                 let heroeModificar = arrayPersonas.filter(element=>element.id==id);
-                modificarPersonaje(heroeModificar[0]);
-                heroeModificar[0].ActualizarDatos(nombre,apellido,edad,alterego,ciudad,publicado);
+                modificarPersonaje(heroeModificar[0],[nombre,apellido,edad,alterego,ciudad,publicado]);
             }
         }else
         {
@@ -244,7 +250,7 @@ function AltaModificacion()
                 cargarPersonaje(VillanoAux);
             }else{
                 let VillanoModificar = arrayPersonas.filter(element=>{ if(element.id==id) return element});
-                VillanoModificar[0].ActualizarDatos(nombre,apellido,edad,enemigo,robos,asesinatos);
+                modificarPersonaje(VillanoModificar[0],[nombre,apellido,edad,enemigo,robos,asesinatos]);
             }
         }
     }
