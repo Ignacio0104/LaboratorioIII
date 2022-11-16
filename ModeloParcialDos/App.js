@@ -43,22 +43,24 @@ function cargarPersonaje(personaje)
         body: JSON.stringify(personaje)
     });
     consulta.then(respuesta=>{
+        MostrarSpinner(false);
         if(respuesta.status==200)
         {
             respuesta.json().then(objetoEnJson =>{
                 personaje.id=JSON.parse(objetoEnJson["id"]);
-                arrayPersonas.push(personaje)
-                MostrarOcultarForm();
-                MostrarSpinner(false);
+                arrayPersonas.push(personaje);
+                MostrarOcultarForm();       
             }).catch(err => {
-                MostrarSpinner(false);
-                etiquetaError.innerText = "Error, no se pudo realizar la carga";
-                etiquetaError.style.display="flex";
+                alert (err);
+                MostrarOcultarForm();  
             }) 
         }else{
-            MostrarSpinner(false);
-            etiquetaError.innerText = "Error, no se pudo concretar la request";
-            etiquetaError.style.display="flex";
+            mensajeErrorForm.innerText="Error, no se pudo leer realizar el alta!";
+            mensajeErrorForm.style.display= "flex"; 
+            MostrarOcultarForm(); 
+            setTimeout(()=>{
+                mensajeErrorForm.style.display= "none";
+            },3000);
         }
     }).catch(err=>alert(err));
 };
