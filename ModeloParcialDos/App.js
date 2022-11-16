@@ -55,7 +55,7 @@ function cargarPersonaje(personaje)
                 MostrarOcultarForm();  
             }) 
         }else{
-            mensajeErrorForm.innerText="Error, no se pudo leer realizar el alta!";
+            mensajeErrorForm.innerText="Error, no se pudo realizar el alta!";
             mensajeErrorForm.style.display= "flex"; 
             MostrarOcultarForm(); 
             setTimeout(()=>{
@@ -87,7 +87,45 @@ async function modificarPersonaje(personaje,atributos)
         MostrarOcultarForm();      
         MostrarSpinner(false);
     }else{
-        console.log("No se pudo");
+        mensajeErrorForm.innerText="Error, no se pudo realizar la modificacion!";
+        mensajeErrorForm.style.display= "flex"; 
+        MostrarSpinner(false);
+        MostrarOcultarForm(); 
+        setTimeout(()=>{
+            mensajeErrorForm.style.display= "none";
+        },3000);
+    }
+}
+
+async function eliminarPersonaje(personaje,indice)
+{
+    MostrarSpinner(true);
+    let consulta = await fetch('http://localhost/personajes.php',{
+        method: "DELETE",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers :{
+            'Content-Type' : 'application/json'
+        },
+        redirect: "follow",
+        referrerPolicy : "no-referrer",
+        body: JSON.stringify(personaje)
+    });
+    let texto = await consulta.text();
+    if(consulta.status!=400)
+    {
+        arrayPersonas.splice(indice,1);
+        MostrarOcultarForm();      
+        MostrarSpinner(false);
+    }else{
+        mensajeErrorForm.innerText="Error, no se pudo realizar la baja!";
+        mensajeErrorForm.style.display= "flex"; 
+        MostrarSpinner(false);
+        MostrarOcultarForm(); 
+        setTimeout(()=>{
+            mensajeErrorForm.style.display= "none";
+        },3000);
     }
 }
 
@@ -241,12 +279,10 @@ function EliminarRegistro()
         if(arrayPersonas[index].id == id)
         {
             indice = index;
+            eliminarPersonaje(arrayPersonas[index],index);
             break;
         }  
     }
-    arrayPersonas.splice(indice,1);
-    alert("Elemento eliminado");
-    MostrarOcultarForm();
 }
 
 function AltaModificacion()
