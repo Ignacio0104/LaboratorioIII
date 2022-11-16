@@ -3,6 +3,7 @@ let arrayJson;
 let arrayPersonas=[];
 
 function traerPersonajes(){
+    MostrarSpinner(true);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
         if(xhttp.readyState ==4) //Se espera a llegar al estado 4 y despues se valida el estado 200
@@ -11,9 +12,14 @@ function traerPersonajes(){
             {
                 console.log(xhttp.response)
                 arrayJson = JSON.parse(xhttp.response); 
-                CargaInformacionJSON();               
+                MostrarSpinner(false);
+                CargaInformacionJSON();      
             }else{
-                console.log("No se pudieron recuperar los datos");
+                MostrarSpinner(false);
+                formularioVisible=true;
+                MostrarOcultarForm();
+                mensajeErrorForm.innerText="Error, no se pudo leer la base de datos";
+                    mensajeErrorForm.style.display= "flex";   
             }
         }     
     };
@@ -23,6 +29,7 @@ xhttp.send();
 
 function cargarPersonaje(personaje)
 {
+    MostrarSpinner(true);
     let consulta = fetch('http://localhost/personajes.php',{
         method: "PUT",
         mode: "cors",
@@ -42,15 +49,23 @@ function cargarPersonaje(personaje)
                 personaje.id=JSON.parse(objetoEnJson["id"]);
                 arrayPersonas.push(personaje)
                 MostrarOcultarForm();
-            }).catch(err => alert(err))//Siempre catch 
+                MostrarSpinner(false);
+            }).catch(err => {
+                MostrarSpinner(false);
+                etiquetaError.innerText = "Error, no se pudo realizar la carga";
+                etiquetaError.style.display="flex";
+            }) 
         }else{
-            console.log("No se pudo")
+            MostrarSpinner(false);
+            etiquetaError.innerText = "Error, no se pudo concretar la request";
+            etiquetaError.style.display="flex";
         }
     }).catch(err=>alert(err));
 };
 
 async function modificarPersonaje(personaje,atributos)
 {
+    MostrarSpinner(true);
     let consulta = await fetch('http://localhost/personajes.php',{
         method: "POST",
         mode: "cors",
@@ -68,11 +83,11 @@ async function modificarPersonaje(personaje,atributos)
     {
         personaje.ActualizarDatos(atributos[0],atributos[1],atributos[2],atributos[3],atributos[4],atributos[5]);
         MostrarOcultarForm();      
+        MostrarSpinner(false);
     }else{
         console.log("No se pudo");
     }
 }
-
 
 //Variables
 let formularioVisible=true;
@@ -90,6 +105,22 @@ let botonModificar = document.getElementById("modificar_btn");
 let botonEliminar = document.getElementById("eliminar_btn");
 let botonCancelar = document.getElementById("cancelar_btn");
 let etiquetaError = document.getElementById("mensaje_error");
+let mensajeErrorForm = document.getElementById("etiquetaErrores");
+
+
+function MostrarSpinner(bool)
+{
+    let spinner = document.getElementById("spinnerId");
+    let container = document.getElementById("mainCointaner");
+    if(bool)
+    {   
+        spinner.style.display = "flex";
+        container.style.display="none";
+    }else{
+        spinner.style.display = "none";
+        container.style.display="block";
+    }
+}
 
 //Asignacion de listeners
 window.addEventListener("load",traerPersonajes);
@@ -182,7 +213,6 @@ function ValidarCampos(id,nombre,apellido,edad,alterego,ciudad,publicado,enemigo
         }
     }
     etiquetaError.style.display="none";
-    alert ("Cambio guardado con éxito");  
    return true;
 }
 

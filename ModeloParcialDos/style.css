@@ -13,6 +13,14 @@ body{
     margin-left: 0.5em;
 }
 
+.containerErrores{
+    font-family: 'Raleway', sans-serif;
+    margin-left: 20px;
+    color: #ffba08;
+    display: none;
+    justify-content: center;
+}
+
 .input_select {
     -webkit-appearance:none;
     -moz-appearance:none;
@@ -269,9 +277,19 @@ form input{
 }
 
 .spinner{
+    display: flex;
     position: absolute;
+    align-items: center;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.4;
 }
 
+.spinnerItem{
+    margin: auto;
+}
 
 
 
