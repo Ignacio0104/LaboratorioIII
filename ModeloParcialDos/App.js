@@ -81,7 +81,7 @@ async function modificarPersonaje(personaje,atributos)
         body: JSON.stringify(personaje)
     });
     let texto = await consulta.text();
-    if(consulta.status!=400)
+    if(consulta.status==400)
     {
         personaje.ActualizarDatos(atributos[0],atributos[1],atributos[2],atributos[3],atributos[4],atributos[5]);
         MostrarOcultarForm();      
@@ -134,7 +134,6 @@ let formularioVisible=true;
 
 //Selectores
 let body = document.querySelector("body");
-let checkBoxList = document.querySelectorAll('input[type=checkbox]');
 let comboBox = document.getElementById("select_filtro");
 let tablaInformacion = document.getElementById("tabla");
 let botonCalculo = document.getElementById("calcular_btn");
@@ -167,9 +166,6 @@ window.addEventListener("load",traerPersonajes);
 window.addEventListener("load",CargarTablas);
 comboBox.addEventListener("change",CargarTablas)
 comboBoxAlta.addEventListener("change",OcultarCampos)
-checkBoxList.forEach(element => {
-    element.addEventListener("change",FiltrarColumnas);
-});
 botonCalculo.addEventListener("click",CalcularEdadPromedio);
 botonAgregar.addEventListener("click",MostrarOcultarForm);
 botonAlta.addEventListener("click",AltaModificacion);
@@ -274,11 +270,9 @@ function EncontrarUltimoId()
 function EliminarRegistro()
 {
     let id = document.getElementById("input_id").value;
-    let indice;
     for (let index = 0; index < arrayPersonas.length; index++) {
         if(arrayPersonas[index].id == id)
         {
-            indice = index;
             eliminarPersonaje(arrayPersonas[index],index);
             break;
         }  
@@ -329,7 +323,6 @@ function CargarTablas()
 {
     tablaInformacion.innerHTML=""; 
     etiquetaError.style.display="none";
-    FiltrarColumnas()
     CargarTitulos();
     arrayFiltrado = arrayPersonas.filter(element => FiltrarPorComboBox(element));
     arrayFiltrado.map(element=>CrearRegistros(element));  
@@ -414,16 +407,6 @@ function CrearRegistros(element)
     celdaModificar.appendChild(botonModificar);
     celdaEliminar.appendChild(botonEliminar);
 
-    celdaId.classList.add("id");
-    celdaNombre.classList.add("nombre");
-    celdaApellido.classList.add("apellido");
-    celdaEdad.classList.add("edad");
-    celdaalterego.classList.add("alterego");
-    celdaCiudad.classList.add("ciudad");
-    celdaPublicado.classList.add("publicado");
-    celdaEnemigo.classList.add("enemigo");
-    celdaRobos.classList.add("robos");
-    celdaAsesinatos.classList.add("asesinatos");
     
     tablaInformacion.appendChild(filaTabla);
 }
@@ -457,17 +440,6 @@ function CargarTitulos()
     filaTitulos.appendChild(celdaAsesinatos);
     filaTitulos.appendChild(celdaModificar);
     filaTitulos.appendChild(celdaEliminar);
-
-    celdaId.classList.add("id");
-    celdaNombre.classList.add("nombre");
-    celdaApellido.classList.add("apellido");
-    celdaEdad.classList.add("edad");
-    celdaalterego.classList.add("alterego");
-    celdaCiudad.classList.add("ciudad");
-    celdaPublicado.classList.add("publicado");
-    celdaEnemigo.classList.add("enemigo");
-    celdaRobos.classList.add("robos");
-    celdaAsesinatos.classList.add("asesinatos");
 
     celdaId.innerText="ID";
     celdaNombre.innerText="Nombre";
@@ -550,43 +522,6 @@ function FiltrarPorComboBox(element){
         case "villanos":
             return(element instanceof(Villano))
     }
-}
-
-function FiltrarColumnas()
-{
-    document.querySelectorAll(".id").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".nombre").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".apellido").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".edad").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".alterego").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".ciudad").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".publicado").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".enemigo").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".robos").forEach(a=>a.style.display = "none");
-    document.querySelectorAll(".asesinatos").forEach(a=>a.style.display = "none");
-    let checkBoxChecked = document.querySelectorAll('input[type=checkbox]:checked');
-    checkBoxChecked.forEach(element => {
-        if(element.value == "id")
-            document.querySelectorAll(".id").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "nombre")
-            document.querySelectorAll(".nombre").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "apellido")
-            document.querySelectorAll(".apellido").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "edad")
-            document.querySelectorAll(".edad").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "alterego")
-            document.querySelectorAll(".alterego").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "ciudad")
-            document.querySelectorAll(".ciudad").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "publicado")
-            document.querySelectorAll(".publicado").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "enemigo")
-            document.querySelectorAll(".enemigo").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "robos")
-            document.querySelectorAll(".robos").forEach(a=>a.style.display = "inline-block");
-        if(element.value == "asesinatos")
-            document.querySelectorAll(".asesinatos").forEach(a=>a.style.display = "inline-block");
-    });
 }
 
 //Mostrar Ocultar

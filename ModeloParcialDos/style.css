@@ -141,6 +141,7 @@ td{
     border: solid 1px #ffba08;
     text-align: -internal-center;
     text-align: center;
+    width: 100px;
 }
 
 tr:hover{
@@ -160,47 +161,6 @@ table {
 
 #select_tipo{
     width: auto;
-}
-
-
-.id{
-    width: 70px;
-}
-
-.nombre{
-    width: 150px;
-}
-
-.apellido{
-    width: 150px;
-}
-
-.edad{
-    width: 70px;
-}
-
-.alterEgo{
-    width: 150px;
-}
-
-.ciudad{
-    width: 150px;
-}
-
-.publicado{
-    width: 100px;
-}
-
-.enemigo{
-    width: 150px;
-}
-
-.robos{
-    width: 100px;
-}
-
-.asesinatos{
-    width: 100px;
 }
 
 .label_formulario{
@@ -289,6 +249,12 @@ form input{
 
 .spinnerItem{
     margin: auto;
+}
+
+.containerErrores{
+    background-color: black;
+    font-size: large;
+    font-weight: bold;
 }
 
 
